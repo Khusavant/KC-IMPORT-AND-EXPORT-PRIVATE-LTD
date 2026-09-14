@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import ProductsCatalogClient from "./ProductsCatalogClient";
 import { PRODUCTS } from "@/lib/products";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
@@ -35,7 +36,9 @@ export default function ProductsPage() {
           { name: "Products", url: "https://kcimportexport.com/products" },
         ]}
       />
-      <ProductsCatalogClient initialProducts={PRODUCTS} />
+      <Suspense fallback={<div className="min-h-screen bg-gray-50 animate-pulse" />}>
+        <ProductsCatalogClient initialProducts={PRODUCTS} />
+      </Suspense>
     </>
   );
 }

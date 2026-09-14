@@ -12,6 +12,8 @@ import {
   Sparkles,
   AlertCircle,
   RotateCcw,
+  Maximize2,
+  Minimize2,
 } from "lucide-react";
 import { ChatMessage as ChatMessageType, RFQSummary, LeadIntentLevel } from "@/lib/ai-types";
 import { PRODUCTS, Product } from "@/lib/products";
@@ -38,6 +40,90 @@ export default function AIChatWidget() {
   const reduced = useReducedMotion();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Resize state (Desktop only)
+  const MIN_WIDTH = 380;
+  const MIN_HEIGHT = 480;
+  const DEFAULT_WIDTH = 420;
+  const DEFAULT_HEIGHT = 590;
+
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [dimensions, setDimensions] = useState({ width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT });
+  const [isMaximized, setIsMaximized] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
+  const resizeRef = useRef<{
+    startX: number;
+    startY: number;
+    startWidth: number;
+    startHeight: number;
+    direction: "top" | "left" | "top-left";
+  } | null>(null);
+
+  useEffect(() => {
+    const checkDesktop = () => setIsDesktop(window.innerWidth >= 640);
+    checkDesktop();
+    window.addEventListener("resize", checkDesktop);
+    return () => window.removeEventListener("resize", checkDesktop);
+  }, []);
+
+  const startResize = (
+    e: React.PointerEvent,
+    direction: "top" | "left" | "top-left"
+  ) => {
+    if (!isDesktop) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (isMaximized) setIsMaximized(false);
+    setIsResizing(true);
+    resizeRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      startWidth: dimensions.width,
+      startHeight: dimensions.height,
+      direction,
+    };
+  };
+
+  useEffect(() => {
+    const handlePointerMove = (e: PointerEvent) => {
+      if (!resizeRef.current) return;
+      const { startX, startY, startWidth, startHeight, direction } = resizeRef.current;
+
+      const deltaX = startX - e.clientX; // Dragging left increases width
+      const deltaY = startY - e.clientY; // Dragging up increases height
+
+      const maxWidth =
+        typeof window !== "undefined" ? Math.min(window.innerWidth - 32, 920) : 800;
+      const maxHeight =
+        typeof window !== "undefined" ? Math.min(window.innerHeight - 48, 880) : 850;
+
+      let newWidth = startWidth;
+      let newHeight = startHeight;
+
+      if (direction === "left" || direction === "top-left") {
+        newWidth = Math.max(MIN_WIDTH, Math.min(maxWidth, startWidth + deltaX));
+      }
+      if (direction === "top" || direction === "top-left") {
+        newHeight = Math.max(MIN_HEIGHT, Math.min(maxHeight, startHeight + deltaY));
+      }
+
+      setDimensions({ width: newWidth, height: newHeight });
+    };
+
+    const handlePointerUp = () => {
+      if (resizeRef.current) {
+        resizeRef.current = null;
+        setIsResizing(false);
+      }
+    };
+
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerUp);
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerUp);
+    };
+  }, []);
 
   // Detect if user is on a product detail page
   useEffect(() => {
@@ -84,6 +170,34 @@ export default function AIChatWidget() {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, isTyping, isOpen]);
+
+  // Listen for global open-ai-chat event from Navbar and AskAIButton
+  useEffect(() => {
+    const handleOpenChat = (event: Event) => {
+      const customEvent = event as CustomEvent<{ productName?: string; sku?: string }>;
+      setIsOpen(true);
+      if (customEvent.detail?.productName) {
+        const timestamp = new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `seed-${Date.now()}`,
+            role: "assistant",
+            content: `Hello! I see you're inquiring about **${customEvent.detail.productName}**${
+              customEvent.detail.sku ? ` (SKU: ${customEvent.detail.sku})` : ""
+            }. Would you like to review technical specifications, discuss container packaging & MOQ, or get a formal FOB/CIF quote?`,
+            timestamp,
+          },
+        ]);
+      }
+    };
+
+    window.addEventListener("open-ai-chat", handleOpenChat);
+    return () => window.removeEventListener("open-ai-chat", handleOpenChat);
+  }, []);
 
   const handleSendMessage = async (userText: string) => {
     if (!userText.trim() || isTyping) return;
@@ -188,7 +302,7 @@ export default function AIChatWidget() {
           id: `ast-err-${Date.now()}`,
           role: "assistant",
           content:
-            "Our AI assistant is temporarily unavailable. Please contact our export sales desk directly on WhatsApp at **+91 98765 43210** or email **exports@kcimportexport.com**.",
+            "Our AI assistant is temporarily unavailable. Please contact our export sales desk directly on WhatsApp at **+91 99999 99999** or email **exports@kcimportexport.com**.",
           timestamp: errorTimestamp,
         },
       ]);
@@ -259,9 +373,55 @@ export default function AIChatWidget() {
             animate={{ opacity: 1, scale: 1 }}
             exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.9 }}
             transition={{ duration: reduced ? 0.01 : 0.22, ease: "easeOut" }}
-            style={{ transformOrigin: "bottom right" }}
-            className="fixed bottom-6 right-6 z-50 w-[410px] max-w-[calc(100vw-24px)] h-[580px] max-h-[calc(100vh-48px)] max-sm:inset-0 max-sm:w-full max-sm:h-full max-sm:max-h-full max-sm:bottom-0 max-sm:right-0 bg-white rounded-2xl max-sm:rounded-none shadow-2xl border border-gray-200 flex flex-col overflow-hidden"
+            style={{
+              transformOrigin: "bottom right",
+              ...(isDesktop && !isMaximized
+                ? {
+                    width: `${dimensions.width}px`,
+                    height: `${dimensions.height}px`,
+                  }
+                : {}),
+            }}
+            className={`fixed z-50 bg-white flex flex-col overflow-hidden shadow-2xl border border-gray-200 ${
+              isDesktop
+                ? `bottom-6 right-6 rounded-2xl max-w-[calc(100vw-24px)] max-h-[calc(100vh-48px)] ${
+                    isMaximized ? "w-[min(92vw,920px)] h-[min(88vh,860px)]" : ""
+                  } ${
+                    isResizing
+                      ? "select-none transition-none"
+                      : "transition-[width,height] duration-200"
+                  }`
+                : "inset-0 w-full h-full rounded-none border-none bottom-0 right-0 max-h-full"
+            }`}
           >
+            {/* Resizable Handles (Desktop only) */}
+            {isDesktop && (
+              <>
+                {/* Resizable Corner Handle */}
+                <div
+                  onPointerDown={(e) => startResize(e, "top-left")}
+                  className="absolute top-0 left-0 w-6 h-6 cursor-nwse-resize z-30 items-start justify-start p-1 group touch-none flex"
+                  title="Drag corner to resize"
+                >
+                  <div className="w-2.5 h-2.5 border-t-2 border-l-2 border-white/50 group-hover:border-amber-400 transition-colors rounded-tl-sm" />
+                </div>
+
+                {/* Top Border Resize Handle */}
+                <div
+                  onPointerDown={(e) => startResize(e, "top")}
+                  className="absolute top-0 left-6 right-0 h-2 cursor-ns-resize z-20 hover:bg-amber-400/30 transition-colors touch-none"
+                  title="Drag edge to resize height"
+                />
+
+                {/* Left Border Resize Handle */}
+                <div
+                  onPointerDown={(e) => startResize(e, "left")}
+                  className="absolute top-6 left-0 bottom-0 w-2 cursor-ew-resize z-20 hover:bg-amber-400/30 transition-colors touch-none"
+                  title="Drag edge to resize width"
+                />
+              </>
+            )}
+
             {/* Header */}
             <div className="px-4 py-3 bg-[#1B3A6B] text-white flex items-center justify-between shrink-0 shadow-xs">
               <div className="flex items-center gap-2.5">
@@ -301,6 +461,19 @@ export default function AIChatWidget() {
                 >
                   <RotateCcw className="w-4 h-4" />
                 </button>
+                {isDesktop && (
+                  <button
+                    onClick={() => setIsMaximized(!isMaximized)}
+                    title={isMaximized ? "Restore size" : "Maximize chat"}
+                    className="p-1.5 text-blue-200 hover:text-white hover:bg-white/10 rounded-lg transition"
+                  >
+                    {isMaximized ? (
+                      <Minimize2 className="w-4 h-4" />
+                    ) : (
+                      <Maximize2 className="w-4 h-4" />
+                    )}
+                  </button>
+                )}
                 <button
                   onClick={() => setIsOpen(false)}
                   title="Minimize chat"
@@ -336,7 +509,7 @@ export default function AIChatWidget() {
                     <span>Need an immediate Proforma or custom packing?</span>
                   </div>
                   <a
-                    href="https://wa.me/919876543210?text=Hello%20KC%20Export%20Desk%2C%20I%20am%20chatting%20with%20your%20AI%20and%20need%20a%20commercial%20quote."
+                    href="https://wa.me/919999999999?text=Hello%20KC%20Export%20Desk%2C%20I%20am%20chatting%20with%20your%20AI%20and%20need%20a%20commercial%20quote."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="shrink-0 px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg inline-flex items-center gap-1 transition"

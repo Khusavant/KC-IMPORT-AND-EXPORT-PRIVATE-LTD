@@ -239,8 +239,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 4. Capabilities Section (Sourcing, Export Documentation, Packaging, Quality Checks) */}
-      <section className="py-16 sm:py-20 bg-white">
+      {/* 4. Capabilities & Standards Section (Quality Checks, Certifications & Documentation) */}
+      <section id="certifications" className="scroll-mt-20 py-16 sm:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-xs font-semibold text-[#1B3A6B] uppercase tracking-wider">

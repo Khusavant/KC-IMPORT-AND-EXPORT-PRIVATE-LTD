@@ -24,13 +24,13 @@ export const COMPANY_TAGLINE = "Your Reliable India-Based Export Partner";
 export const COMPANY_EMAIL = "exports@kcimportexport.com";
 
 // TODO: replace with real data
-export const COMPANY_PHONE = "+91 98765 43210";
+export const COMPANY_PHONE = "+91 99999 99999";
 
 // TODO: replace with real data
-export const COMPANY_WHATSAPP = "+91 98765 43210";
+export const COMPANY_WHATSAPP = "+91 99999 99999";
 
 // TODO: replace with real data
-export const COMPANY_WHATSAPP_LINK = "https://wa.me/919876543210";
+export const COMPANY_WHATSAPP_LINK = "https://wa.me/919999999999";
 
 // TODO: replace with real data
 export const COMPANY_ADDRESS = {

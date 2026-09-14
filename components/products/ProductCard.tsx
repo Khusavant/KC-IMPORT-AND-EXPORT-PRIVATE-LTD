@@ -80,7 +80,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
 
             {/* Card Content */}
-          <div className="p-5 space-y-3 bg-white">
+          <div className="p-4 sm:p-5 space-y-2.5 bg-white">
             <SmoothLink href={`/products/${product.slug}`} wrapperClassName="block" className="block group-hover:text-[#1B3A6B]">
               <h3 className="text-base sm:text-lg font-bold text-gray-900 line-clamp-1 group-hover:text-[#1B3A6B] transition font-serif">
                 {product.name}
@@ -106,7 +106,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Card Footer Actions */}
-        <div className="p-5 pt-0 border-t border-gray-100 flex items-center gap-2 bg-white rounded-b-2xl">
+        <div className="p-4 sm:p-5 pt-0 border-t border-gray-100 flex items-center gap-2 bg-white rounded-b-2xl">
           <SmoothLink
             href={`/products/${product.slug}`}
             wrapperClassName="flex-1 flex"

@@ -12,16 +12,20 @@ export interface FilterState {
   moqRange: string; // "all" | "low" | "container"
 }
 
-interface ProductFiltersProps {
+export type ProductFiltersProps = {
+  selectedCategory: string;
+  onCategoryChange: (cat: string) => void;
   filters: FilterState;
   onFilterChange: (newFilters: FilterState) => void;
   onResetFilters: () => void;
   availableIndustries: string[];
   availableMarkets: string[];
   totalResults: number;
-}
+};
 
 export default function ProductFilters({
+  selectedCategory,
+  onCategoryChange,
   filters,
   onFilterChange,
   onResetFilters,
@@ -30,7 +34,7 @@ export default function ProductFilters({
   totalResults,
 }: ProductFiltersProps) {
   const isFiltered =
-    filters.category !== "all" ||
+    (selectedCategory !== "All" && selectedCategory !== "all") ||
     filters.industry !== "all" ||
     filters.market !== "all" ||
     filters.customization !== "all" ||
@@ -68,16 +72,34 @@ export default function ProductFilters({
           Product Category
         </label>
         <select
-          value={filters.category}
-          onChange={(e) => handleSelect("category", e.target.value)}
+          value={
+            selectedCategory === "Agricultural"
+              ? "Agricultural Products"
+              : selectedCategory
+          }
+          onChange={(e) => onCategoryChange(e.target.value)}
           className="w-full py-2 px-3 text-xs sm:text-sm rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B3A6B] bg-white"
         >
-          <option value="all">All Categories (6)</option>
-          {PRODUCT_CATEGORIES.map((c) => (
-            <option key={c.id} value={c.name}>
-              {c.name}
-            </option>
-          ))}
+          <option value="All">All Categories (6)</option>
+          {PRODUCT_CATEGORIES.map((c) => {
+            const val =
+              c.id === "agricultural-products"
+                ? "Agricultural Products"
+                : c.id === "industrial-components"
+                ? "Industrial Components"
+                : c.id === "textiles"
+                ? "Textiles"
+                : c.id === "food-products"
+                ? "Processed Food"
+                : c.id === "hardware-tools"
+                ? "Hardware & Tools"
+                : "Consumer Goods";
+            return (
+              <option key={c.id} value={val}>
+                {c.name}
+              </option>
+            );
+          })}
         </select>
       </div>
 

@@ -50,7 +50,7 @@ export default function HomePage() {
     },
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": "+91-98765-43210",
+      "telephone": "+91-99999-99999",
       "contactType": "export sales",
       "areaServed": "Worldwide",
       "availableLanguage": ["English", "Hindi", "Gujarati"],

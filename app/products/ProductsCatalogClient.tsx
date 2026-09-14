@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { Product } from "@/lib/products";
+import React, { useState, useMemo, useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
+import { Product, PRODUCTS } from "@/lib/products";
 import ProductSearch from "@/components/products/ProductSearch";
 import ProductFilters, { FilterState } from "@/components/products/ProductFilters";
 import ProductGrid from "@/components/products/ProductGrid";
-import { Layers, ShieldCheck, Factory, Sparkles } from "lucide-react";
+import { Layers, ShieldCheck, Factory, Sparkles, X } from "lucide-react";
 
 interface ProductsCatalogClientProps {
-  initialProducts: Product[];
+  initialProducts?: Product[];
 }
 
 const DEFAULT_FILTERS: FilterState = {
@@ -19,11 +20,63 @@ const DEFAULT_FILTERS: FilterState = {
   moqRange: "all",
 };
 
+// Map param values to actual category names in products.ts:
+const CATEGORY_MAP: Record<string, string> = {
+  agricultural: "Agricultural",
+  "agricultural-products": "Agricultural",
+  industrial: "Industrial Components",
+  "industrial-components": "Industrial Components",
+  textiles: "Textiles",
+  food: "Processed Food",
+  "food-products": "Processed Food",
+  "processed-food": "Processed Food",
+  hardware: "Hardware & Tools",
+  "hardware-tools": "Hardware & Tools",
+  consumer: "Consumer Goods",
+  "consumer-goods": "Consumer Goods",
+};
+
 export default function ProductsCatalogClient({
-  initialProducts,
+  initialProducts = PRODUCTS,
 }: ProductsCatalogClientProps) {
+  const searchParams = useSearchParams();
+  const catParam = searchParams.get("cat") || searchParams.get("category");
+
+  // Initialize selectedCategory state from URL param:
+  const [selectedCategory, setSelectedCategory] = useState<string>(
+    catParam ? (CATEGORY_MAP[catParam] ?? "All") : "All"
+  );
+
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
+  const isFirstMount = useRef(true);
+
+  // Sync when param changes (user navigates from dropdown):
+  useEffect(() => {
+    if (catParam) {
+      if (CATEGORY_MAP[catParam]) {
+        setSelectedCategory(CATEGORY_MAP[catParam]);
+      }
+      // If user clicked category navigation after initial mount, smooth scroll higher up
+      if (!isFirstMount.current) {
+        const target =
+          document.getElementById(`category-${catParam}`) ||
+          document.getElementById("catalog-products-section");
+        if (target) {
+          const navOffset = 96; // 72px navbar + 24px comfortable breathing space
+          const elementPosition = target.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - navOffset;
+          window.scrollTo({
+            top: Math.max(0, offsetPosition),
+            behavior: "smooth",
+          });
+        }
+      }
+    } else if (!isFirstMount.current) {
+      setSelectedCategory("All");
+    }
+    isFirstMount.current = false;
+  }, [catParam]);
 
   // Extract unique industries and available markets dynamically from data
   const availableIndustries = useMemo(() => {
@@ -56,9 +109,13 @@ export default function ProductsCatalogClient({
         if (!matchesQuery) return false;
       }
 
-      // 2. Category Filter
-      if (filters.category !== "all" && product.category !== filters.category) {
-        return false;
+      // 2. Category Filter (controlled via selectedCategory)
+      if (selectedCategory !== "All" && selectedCategory !== "all") {
+        const sel = selectedCategory.toLowerCase();
+        const prodCat = product.category.toLowerCase();
+        const matches =
+          prodCat === sel || prodCat.startsWith(sel) || sel.startsWith(prodCat);
+        if (!matches) return false;
       }
 
       // 3. Industry Filter
@@ -87,22 +144,29 @@ export default function ProductsCatalogClient({
 
       // 6. MOQ Filter
       if (filters.moqRange === "container") {
-        if (!product.moq.toLowerCase().includes("container") && !product.moq.toLowerCase().includes("fcl")) {
+        if (
+          !product.moq.toLowerCase().includes("container") &&
+          !product.moq.toLowerCase().includes("fcl")
+        ) {
           return false;
         }
       }
       if (filters.moqRange === "pallet") {
-        if (product.moq.toLowerCase().includes("container") || product.moq.toLowerCase().includes("fcl")) {
+        if (
+          product.moq.toLowerCase().includes("container") ||
+          product.moq.toLowerCase().includes("fcl")
+        ) {
           return false;
         }
       }
 
       return true;
     });
-  }, [initialProducts, searchQuery, filters]);
+  }, [initialProducts, searchQuery, selectedCategory, filters]);
 
   const handleResetFilters = () => {
     setFilters(DEFAULT_FILTERS);
+    setSelectedCategory("All");
     setSearchQuery("");
   };
 
@@ -125,22 +189,51 @@ export default function ProductsCatalogClient({
           </p>
 
           {/* Search Bar in Hero */}
-          <div className="pt-4">
+          <div className="pt-4 max-w-2xl mx-auto">
             <ProductSearch
               searchQuery={searchQuery}
               onSearchChange={setSearchQuery}
             />
           </div>
+
+          {/* Visual feedback: Dismissible filter chip below search bar */}
+          {selectedCategory !== "All" && (
+            <div className="pt-3 flex justify-center">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-500/15 border border-amber-400/30 backdrop-blur-sm rounded-full text-sm shadow-sm transition-all duration-300">
+                <span className="text-amber-200 font-medium text-xs sm:text-sm">
+                  Filtered by: <strong className="text-white font-semibold">{selectedCategory}</strong>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setSelectedCategory("All")}
+                  className="text-amber-300 hover:text-white transition p-0.5"
+                  aria-label="Clear category filter"
+                >
+                  <X size={14} />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
       {/* 2. Main Content: Sidebar Filters (Left) + Product Grid (Right) */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-12 sm:pb-16">
+        {/* Invisible scroll anchor points for category navigation */}
+        <div id="category-agricultural" className="scroll-mt-24" />
+        <div id="category-industrial" className="scroll-mt-24" />
+        <div id="category-textiles" className="scroll-mt-24" />
+        <div id="category-food" className="scroll-mt-24" />
+        <div id="category-hardware" className="scroll-mt-24" />
+        <div id="category-consumer" className="scroll-mt-24" />
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Sidebar Filter Panel (3 cols) */}
           <aside className="lg:col-span-3">
-            <div className="sticky top-28">
+            <div className="sticky top-24">
               <ProductFilters
+                selectedCategory={selectedCategory}
+                onCategoryChange={setSelectedCategory}
                 filters={filters}
                 onFilterChange={setFilters}
                 onResetFilters={handleResetFilters}
@@ -152,11 +245,15 @@ export default function ProductsCatalogClient({
           </aside>
 
           {/* Product Grid Area (9 cols) */}
-          <main className="lg:col-span-9">
+          <main
+            id="catalog-products-section"
+            className="lg:col-span-9"
+          >
             <ProductGrid
               products={filteredProducts}
               totalCount={initialProducts.length}
               onResetFilters={handleResetFilters}
+              selectedCategory={selectedCategory}
             />
           </main>
         </div>

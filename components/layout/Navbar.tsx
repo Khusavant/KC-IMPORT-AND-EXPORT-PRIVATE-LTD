@@ -103,37 +103,37 @@ const NAV_ITEMS: NavItem[] = [
           links: [
             {
               label: "Agricultural Products",
-              href: "/products?cat=agricultural",
+              href: "/products?cat=agricultural#category-agricultural",
               icon: "Wheat",
               desc: "Cumin, Turmeric, Spices",
             },
             {
               label: "Industrial Components",
-              href: "/products?cat=industrial",
+              href: "/products?cat=industrial#category-industrial",
               icon: "Settings",
               desc: "Brass, Flanges, Parts",
             },
             {
               label: "Textiles",
-              href: "/products?cat=textiles",
+              href: "/products?cat=textiles#category-textiles",
               icon: "Layers",
               desc: "Cotton Yarn, Fabrics",
             },
             {
               label: "Processed Food",
-              href: "/products?cat=food",
+              href: "/products?cat=food#category-food",
               icon: "Package",
               desc: "Onion Flakes, Mango Pulp",
             },
             {
               label: "Hardware & Tools",
-              href: "/products?cat=hardware",
+              href: "/products?cat=hardware#category-hardware",
               icon: "Wrench",
               desc: "Handles, Spanners",
             },
             {
               label: "Consumer Goods",
-              href: "/products?cat=consumer",
+              href: "/products?cat=consumer#category-consumer",
               icon: "Home",
               desc: "Tiles, Sanitaryware",
             },
@@ -164,10 +164,10 @@ const NAV_ITEMS: NavItem[] = [
         },
       ],
       featured: {
-        label: "New Arrivals",
-        desc: "Latest export-ready products from our Rajkot warehouse",
-        href: "/products",
-        badge: "Updated",
+        label: "Featured Export Item",
+        desc: "Premium Whole Cumin Seeds (99.5% Sortex Cleaned)",
+        href: "/products/premium-whole-cumin-seeds",
+        badge: "Top Export",
       },
     },
   },
@@ -279,7 +279,7 @@ export default function Navbar() {
       }
     };
 
-    const handleClickOutside = (e: MouseEvent) => {
+    const handleClickOutside = (e: MouseEvent | TouchEvent) => {
       if (navRef.current && !navRef.current.contains(e.target as Node)) {
         setActiveDropdown(null);
       }
@@ -287,24 +287,31 @@ export default function Navbar() {
 
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside, { passive: true });
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
     };
   }, []);
 
   const handleMouseEnter = (label: string) => {
-    if (leaveTimeoutRef.current) {
-      clearTimeout(leaveTimeoutRef.current);
-      leaveTimeoutRef.current = null;
+    // Only use hover on desktop devices with fine pointer (mouse)
+    if (typeof window !== "undefined" && window.matchMedia("(pointer: fine)").matches) {
+      if (leaveTimeoutRef.current) {
+        clearTimeout(leaveTimeoutRef.current);
+        leaveTimeoutRef.current = null;
+      }
+      setActiveDropdown(label);
     }
-    setActiveDropdown(label);
   };
 
   const handleMouseLeave = () => {
-    leaveTimeoutRef.current = setTimeout(() => {
-      setActiveDropdown(null);
-    }, 180);
+    if (typeof window !== "undefined" && window.matchMedia("(pointer: fine)").matches) {
+      leaveTimeoutRef.current = setTimeout(() => {
+        setActiveDropdown(null);
+      }, 200);
+    }
   };
 
   const toggleMobileSection = (label: string) => {
@@ -313,6 +320,40 @@ export default function Navbar() {
       [label]: !prev[label],
     }));
   };
+
+  const handleLinkClick = (e: React.MouseEvent, href: string, label: string) => {
+    if (label === "Ask AI Assistant" || href === "/#ai-chat") {
+      e.preventDefault();
+      window.dispatchEvent(new CustomEvent("open-ai-chat"));
+      setActiveDropdown(null);
+      setMobileOpen(false);
+      return;
+    }
+    if (href.includes("?cat=") && pathname === "/products") {
+      setTimeout(() => {
+        const target = document.getElementById("catalog-products-section");
+        target?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 50);
+    }
+    setActiveDropdown(null);
+    setMobileOpen(false);
+  };
+
+  // Lock body scroll when mobile drawer is open and close on route change
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
 
   return (
     <>
@@ -398,36 +439,66 @@ export default function Navbar() {
                     onMouseEnter={() => handleMouseEnter(item.label)}
                     onMouseLeave={handleMouseLeave}
                   >
-                    {/* Trigger Button / Link */}
-                    <Link
-                      href={item.href}
-                      className={`relative inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#F5A623] ${
-                        isScrolled
-                          ? isActive
-                            ? "text-[#1B3A6B] font-bold"
-                            : "text-gray-700 hover:text-[#1B3A6B] hover:bg-gray-50"
-                          : isActive
-                          ? "text-white font-bold"
-                          : "text-gray-200 hover:text-white hover:bg-white/10"
-                      }`}
-                    >
-                      <span>{item.label}</span>
-                      {item.dropdown && (
+                    {/* Trigger Button when dropdown exists, or direct Link if no dropdown */}
+                    {item.dropdown ? (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setActiveDropdown((prev) =>
+                            prev === item.label ? null : item.label
+                          );
+                        }}
+                        aria-expanded={isOpen}
+                        aria-haspopup="true"
+                        className={`relative inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#F5A623] cursor-pointer ${
+                          isScrolled
+                            ? isActive || isOpen
+                              ? "text-[#1B3A6B] font-bold"
+                              : "text-gray-700 hover:text-[#1B3A6B] hover:bg-gray-50"
+                            : isActive || isOpen
+                            ? "text-white font-bold"
+                            : "text-gray-200 hover:text-white hover:bg-white/10"
+                        }`}
+                      >
+                        <span>{item.label}</span>
                         <ChevronDown
                           className={`w-4 h-4 transition-transform duration-200 ${
                             isOpen ? "rotate-180 text-[#F5A623]" : "opacity-60"
                           }`}
                         />
-                      )}
 
-                      {/* Active route dot */}
-                      {isActive && (
-                        <motion.span
-                          layoutId="activeNavDot"
-                          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#F5A623]"
-                        />
-                      )}
-                    </Link>
+                        {/* Active route dot */}
+                        {isActive && (
+                          <motion.span
+                            layoutId="activeNavDot"
+                            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#F5A623]"
+                          />
+                        )}
+                      </button>
+                    ) : (
+                      <Link
+                        href={item.href}
+                        className={`relative inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#F5A623] ${
+                          isScrolled
+                            ? isActive
+                              ? "text-[#1B3A6B] font-bold"
+                              : "text-gray-700 hover:text-[#1B3A6B] hover:bg-gray-50"
+                            : isActive
+                            ? "text-white font-bold"
+                            : "text-gray-200 hover:text-white hover:bg-white/10"
+                        }`}
+                      >
+                        <span>{item.label}</span>
+                        {isActive && (
+                          <motion.span
+                            layoutId="activeNavDot"
+                            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#F5A623]"
+                          />
+                        )}
+                      </Link>
+                    )}
 
                     {/* Dropdown Panels */}
                     <AnimatePresence>
@@ -452,11 +523,11 @@ export default function Navbar() {
                           style={{ transformOrigin: "top" }}
                           className={`absolute top-full pt-2 z-50 ${
                             item.dropdown.type === "mega"
-                              ? "-left-40 lg:-left-24 w-[700px]"
+                              ? "-left-28 sm:-left-36 lg:-left-20 w-[min(94vw,700px)]"
                               : "left-0 w-[280px]"
                           }`}
                         >
-                          <div className="bg-white border-t-4 border-[#F5A623] shadow-2xl rounded-b-2xl p-6 text-gray-900 border-x border-b border-gray-100">
+                          <div className="bg-white border-t-4 border-[#F5A623] shadow-2xl rounded-b-2xl p-5 sm:p-6 text-gray-900 border-x border-b border-gray-100">
                             {/* Mega Dropdown Layout */}
                             {item.dropdown.type === "mega" && (
                               <div className="grid grid-cols-12 gap-6">
@@ -481,6 +552,7 @@ export default function Navbar() {
                                             <Link
                                               key={link.label}
                                               href={link.href}
+                                              onClick={(e) => handleLinkClick(e, link.href, link.label)}
                                               className="group flex items-start gap-2.5 p-2 rounded-lg border-l-4 border-transparent hover:border-[#F5A623] hover:bg-[#FFF8EE] transition-all"
                                             >
                                               <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-[#1B3A6B] group-hover:text-[#F5A623] group-hover:bg-amber-100/60 transition-colors shrink-0">
@@ -520,9 +592,10 @@ export default function Navbar() {
                                   </div>
                                   <Link
                                     href={item.dropdown.featured.href}
+                                    onClick={() => setActiveDropdown(null)}
                                     className="group inline-flex items-center gap-1.5 text-xs font-bold text-[#1B3A6B] hover:text-[#F5A623] transition-colors pt-4"
                                   >
-                                    <span>Explore Catalog</span>
+                                    <span>View Product Specs</span>
                                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                                   </Link>
                                 </div>
@@ -538,6 +611,7 @@ export default function Navbar() {
                                     <Link
                                       key={link.label}
                                       href={link.href}
+                                      onClick={(e) => handleLinkClick(e, link.href, link.label)}
                                       className="group flex items-start gap-3 p-2.5 rounded-lg border-l-4 border-transparent hover:border-[#F5A623] hover:bg-[#FFF8EE] transition-all"
                                     >
                                       <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-[#1B3A6B] group-hover:text-[#F5A623] group-hover:bg-amber-100/60 transition-colors shrink-0">
@@ -617,29 +691,30 @@ export default function Navbar() {
             </div>
           </div>
         </div>
+      </header>
 
-        {/* Mobile Slide-in Drawer with Backdrop */}
-        <AnimatePresence>
-          {mobileOpen && (
-            <>
-              {/* Backdrop */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                onClick={() => setMobileOpen(false)}
-                className="md:hidden fixed inset-0 top-0 bg-black/60 backdrop-blur-sm z-50"
-              />
+      {/* Mobile Slide-in Drawer with Backdrop (outside <header> to ensure true full-screen fixed positioning) */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setMobileOpen(false)}
+              className="md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[999]"
+            />
 
-              {/* Drawer (slides in from left) */}
-              <motion.div
-                initial={{ x: "-100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "-100%" }}
-                transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-                className="md:hidden fixed top-0 bottom-0 left-0 w-[85%] max-w-[340px] bg-white z-50 shadow-2xl flex flex-col justify-between overflow-y-auto"
-              >
+            {/* Drawer (slides in from left, full viewport height) */}
+            <motion.div
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="md:hidden fixed inset-y-0 left-0 w-[85%] max-w-[340px] h-full bg-white z-[1000] shadow-2xl flex flex-col justify-between overflow-y-auto"
+            >
                 {/* Drawer Header */}
                 <div className="p-5 border-b border-gray-100 flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
@@ -715,7 +790,7 @@ export default function Navbar() {
                                     <Link
                                       key={link.label}
                                       href={link.href}
-                                      onClick={() => setMobileOpen(false)}
+                                      onClick={(e) => handleLinkClick(e, link.href, link.label)}
                                       className="flex items-center gap-2 py-1.5 px-2 text-xs font-semibold text-gray-600 hover:text-[#1B3A6B] hover:bg-white rounded transition"
                                     >
                                       <span className="w-1.5 h-1.5 rounded-full bg-[#F5A623]" />
@@ -729,7 +804,7 @@ export default function Navbar() {
                                   <Link
                                     key={link.label}
                                     href={link.href}
-                                    onClick={() => setMobileOpen(false)}
+                                    onClick={(e) => handleLinkClick(e, link.href, link.label)}
                                     className="flex items-center gap-2 py-1.5 px-2 text-xs font-semibold text-gray-600 hover:text-[#1B3A6B] hover:bg-white rounded transition"
                                   >
                                     <span className="w-1.5 h-1.5 rounded-full bg-[#F5A623]" />
@@ -774,7 +849,6 @@ export default function Navbar() {
             </>
           )}
         </AnimatePresence>
-      </header>
     </>
   );
 }

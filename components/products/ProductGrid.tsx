@@ -4,18 +4,19 @@ import React from "react";
 import { Product } from "@/lib/products";
 import ProductCard from "./ProductCard";
 import { PackageSearch, RotateCcw } from "lucide-react";
-import { StaggerList, StaggerItem } from "@/components/animations/StaggerList";
 
 interface ProductGridProps {
   products: Product[];
   totalCount: number;
   onResetFilters: () => void;
+  selectedCategory?: string;
 }
 
 export default function ProductGrid({
   products,
   totalCount,
   onResetFilters,
+  selectedCategory,
 }: ProductGridProps) {
   if (products.length === 0) {
     return (
@@ -46,25 +47,33 @@ export default function ProductGrid({
 
   return (
     <div className="space-y-6">
-      {/* Results Count Strip */}
-      <div className="flex items-center justify-between text-xs text-gray-500 pb-2 border-b border-gray-200/80">
-        <span>
-          Showing <strong className="text-gray-900">{products.length}</strong> of{" "}
-          <strong className="text-gray-900">{totalCount}</strong> verified export products
-        </span>
+      {/* Results Count Strip with Active Filter Badge */}
+      <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-gray-500 pb-3 border-b border-gray-200/80">
+        <div className="flex items-center gap-2.5 flex-wrap">
+          <span>
+            Showing <strong className="text-gray-900">{products.length}</strong> of{" "}
+            <strong className="text-gray-900">{totalCount}</strong> verified export products
+          </span>
+          {selectedCategory && selectedCategory !== "All" && (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-[#1B3A6B] font-semibold text-[11px]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#F5A623]" />
+              <span>{selectedCategory}</span>
+            </span>
+          )}
+        </div>
         <span className="hidden sm:inline text-emerald-600 font-medium">
           • All specifications certified for international export
         </span>
       </div>
 
-      {/* 3-Col Desktop, 2-Col Tablet, 1-Col Mobile Staggered Grid */}
-      <StaggerList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      {/* 3-Col Desktop, 2-Col Tablet, 1-Col Mobile Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         {products.map((product) => (
-          <StaggerItem key={product.id}>
+          <div key={product.id} className="transition-opacity duration-200">
             <ProductCard product={product} />
-          </StaggerItem>
+          </div>
         ))}
-      </StaggerList>
+      </div>
     </div>
   );
 }

@@ -121,7 +121,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
                 <span>Request a Quote</span>
               </button>
 
-              <AskAIButton productName={product.name} />
+              <AskAIButton productName={product.name} sku={product.sku} />
             </div>
 
             {/* Key Commercial Specs Table */}

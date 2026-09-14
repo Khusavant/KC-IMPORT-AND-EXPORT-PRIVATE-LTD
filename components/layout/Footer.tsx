@@ -18,6 +18,9 @@ import {
   ShieldCheck,
   Ship,
   Globe2,
+  Linkedin,
+  Twitter,
+  Facebook,
 } from "lucide-react";
 
 export default function Footer() {
@@ -49,16 +52,52 @@ export default function Footer() {
               from Rajkot, Gujarat.
             </p>
 
-            <div className="pt-2">
+            <div className="pt-2 flex flex-col gap-3">
               <a
                 href={COMPANY_WHATSAPP_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#25D366] hover:bg-[#1EBE5D] text-white text-xs font-bold transition shadow-sm"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#25D366] hover:bg-[#1EBE5D] text-white text-xs font-bold transition shadow-sm w-fit"
               >
                 <MessageCircle className="w-4 h-4 fill-current" />
                 <span>Chat on WhatsApp</span>
               </a>
+
+              {/* Verified Social Media Links */}
+              <div className="pt-1">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400 block mb-2">
+                  Connect With Us
+                </span>
+                <div className="flex items-center gap-2.5">
+                  <a
+                    href="https://linkedin.com/company/kc-import-export"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="KC Import and Export on LinkedIn"
+                    className="w-8 h-8 rounded-lg bg-white/10 hover:bg-[#F5A623] hover:text-[#1B3A6B] flex items-center justify-center text-gray-300 transition-all shadow-xs"
+                  >
+                    <Linkedin className="w-4 h-4" />
+                  </a>
+                  <a
+                    href="https://twitter.com/kc_export_in"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="KC Import and Export on Twitter"
+                    className="w-8 h-8 rounded-lg bg-white/10 hover:bg-[#F5A623] hover:text-[#1B3A6B] flex items-center justify-center text-gray-300 transition-all shadow-xs"
+                  >
+                    <Twitter className="w-4 h-4" />
+                  </a>
+                  <a
+                    href="https://facebook.com/kcimportexport"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="KC Import and Export on Facebook"
+                    className="w-8 h-8 rounded-lg bg-white/10 hover:bg-[#F5A623] hover:text-[#1B3A6B] flex items-center justify-center text-gray-300 transition-all shadow-xs"
+                  >
+                    <Facebook className="w-4 h-4" />
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -160,20 +199,20 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/blog/incoterms-2020-guide-fob-vs-cif-explained-for-b2b-importers"
+                  href="/blog/export-documentation-checklist-what-every-international-buyer-should-know"
                   className="hover:text-white line-clamp-2 group transition flex items-start gap-1.5"
                 >
                   <ArrowUpRight className="w-3 h-3 text-gray-500 group-hover:text-[#F5A623] shrink-0 mt-0.5" />
-                  <span>Incoterms 2020: FOB vs CIF vs CFR Explained</span>
+                  <span>Export Documentation Checklist for Global Importers</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/blog/textile-sourcing-guide-cotton-yarn-fabrics-from-india"
+                  href="/blog/moq-explained-how-minimum-order-quantities-work-in-b2b-export"
                   className="hover:text-white line-clamp-2 group transition flex items-start gap-1.5"
                 >
                   <ArrowUpRight className="w-3 h-3 text-gray-500 group-hover:text-[#F5A623] shrink-0 mt-0.5" />
-                  <span>Cotton Yarn &amp; Fabric Quality Standards</span>
+                  <span>MOQ Guide: How Minimum Order Quantities Work</span>
                 </Link>
               </li>
             </ul>

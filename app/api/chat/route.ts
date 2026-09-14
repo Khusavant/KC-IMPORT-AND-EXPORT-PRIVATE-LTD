@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
     if (messages.length >= 20) {
       return NextResponse.json<AIResponse>({
         reply:
-          "You have reached the 20-message limit for this session. To proceed with your order or connect directly with our international export desk, please reach us on WhatsApp at +91 98765 43210 or email exports@kcimportexport.com.",
+          "You have reached the 20-message limit for this session. To proceed with your order or connect directly with our international export desk, please reach us on WhatsApp at +91 99999 99999 or email exports@kcimportexport.com.",
         rfqDetected: false,
       });
     }
@@ -104,7 +104,7 @@ export async function POST(req: NextRequest) {
       console.warn("GROQ_API_KEY is not set in environment variables.");
       return NextResponse.json<AIResponse>({
         reply:
-          "Our AI assistant is temporarily running in offline mode. Please contact our export sales desk directly via WhatsApp at +91 98765 43210 or email exports@kcimportexport.com for immediate quotes and technical documentation.",
+          "Our AI assistant is temporarily running in offline mode. Please contact our export sales desk directly via WhatsApp at +91 99999 99999 or email exports@kcimportexport.com for immediate quotes and technical documentation.",
         rfqDetected: false,
       });
     }
@@ -186,7 +186,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json<AIResponse>(
       {
         reply:
-          "Our AI is temporarily unavailable. Please contact our export team directly on WhatsApp (+91 98765 43210) or submit a formal inquiry via our Contact page.",
+          "Our AI is temporarily unavailable. Please contact our export team directly on WhatsApp (+91 99999 99999) or submit a formal inquiry via our Contact page.",
         rfqDetected: false,
       },
       { status: 500 }

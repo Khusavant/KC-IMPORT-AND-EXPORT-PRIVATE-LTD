@@ -31,8 +31,8 @@ const INITIAL_SETTINGS: SiteSettings & {
   companyName: "KC Import and Export Private Limited",
   tagline: "Bridging Indian Manufacturing & Agricultural Excellence to the World",
   email: "exports@kcimportexport.com",
-  phone: "+91 281 234 5678",
-  whatsapp: "+91 98765 43210",
+  phone: "+91 99999 99999",
+  whatsapp: "+91 99999 99999",
   address:
     "Plot No. 45, GIDC Industrial Estate, Aji Dam Road, Rajkot - 360003, Gujarat, India",
   socials: {
