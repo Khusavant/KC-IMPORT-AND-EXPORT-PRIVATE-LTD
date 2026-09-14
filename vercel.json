@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.kcimportexport.com"
+        }
+      ],
+      "destination": "https://kcimportexport.com/:path*",
+      "permanent": true
+    }
+  ]
+}
