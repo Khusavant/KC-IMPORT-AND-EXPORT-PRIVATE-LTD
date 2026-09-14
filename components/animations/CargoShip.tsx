@@ -78,6 +78,7 @@ export default function CargoShip({
           xmlns="http://www.w3.org/2000/svg"
           className="overflow-visible drop-shadow-[0_12px_20px_rgba(0,0,0,0.45)]"
           style={{
+            transformOrigin: "center",
             transform: direction === "left" ? "scaleX(-1)" : "none",
           }}
         >

@@ -282,17 +282,23 @@
 
 /* Ship drift reverse (right to left) */
 @keyframes shipDriftReverse {
-  0% { transform: translateX(calc(100vw + 200px)) scaleX(-1); }
-  100% { transform: translateX(-200px) scaleX(-1); }
+  0% { transform: translateX(calc(100vw + 200px)); }
+  100% { transform: translateX(-200px); }
 }
 
-/* Plane flight */
+/* Plane flight (left to right, climbing) */
 @keyframes planeFlight {
-  0% { transform: translate(-300px, 120px) rotateZ(-5deg) scaleX(-1); }
-  100% { transform: translate(calc(100vw + 300px), -80px) rotateZ(-5deg) scaleX(-1); }
+  0% { transform: translate(-300px, 120px) rotateZ(-5deg); }
+  100% { transform: translate(calc(100vw + 300px), -80px) rotateZ(-5deg); }
 }
 
-/* Truck drive */
+/* Plane flight reverse (right to left, climbing) */
+@keyframes planeFlightReverse {
+  0% { transform: translate(calc(100vw + 300px), 120px) rotateZ(5deg); }
+  100% { transform: translate(-300px, -80px) rotateZ(5deg); }
+}
+
+/* Truck drive (left to right) */
 @keyframes truckDrive {
   0% { transform: translateX(-400px); }
   100% { transform: translateX(calc(100vw + 400px)); }
@@ -300,8 +306,8 @@
 
 /* Truck drive reverse (right to left) */
 @keyframes truckDriveReverse {
-  0% { transform: translateX(calc(100vw + 400px)) scaleX(-1); }
-  100% { transform: translateX(-400px) scaleX(-1); }
+  0% { transform: translateX(calc(100vw + 400px)); }
+  100% { transform: translateX(-400px); }
 }
 
 /* Wheel spin */

@@ -88,6 +88,7 @@ export default function CargoTruck({
           xmlns="http://www.w3.org/2000/svg"
           className="overflow-visible drop-shadow-[0_8px_16px_rgba(0,0,0,0.35)]"
           style={{
+            transformOrigin: "center",
             transform: direction === "left" ? "none" : "scaleX(-1)",
           }}
         >
@@ -215,7 +216,7 @@ export default function CargoTruck({
             <circle cx="0" cy="0" r="7" fill="#475569" />
             <circle cx="0" cy="0" r="4" fill="#94A3B8" />
             {/* Rotating Spokes */}
-            <g style={{ animation: "wheelSpin 0.7s linear infinite", transformOrigin: "0 0" }}>
+            <g style={{ animation: `wheelSpin 0.7s linear infinite ${direction === "left" ? "reverse" : "normal"}`, transformOrigin: "0 0" }}>
               <line x1="-6" y1="0" x2="6" y2="0" stroke="#CBD5E1" strokeWidth="1.5" />
               <line x1="0" y1="-6" x2="0" y2="6" stroke="#CBD5E1" strokeWidth="1.5" />
             </g>
@@ -226,7 +227,7 @@ export default function CargoTruck({
             <circle cx="0" cy="0" r="10" fill="#0F172A" />
             <circle cx="0" cy="0" r="7" fill="#475569" />
             <circle cx="0" cy="0" r="4" fill="#94A3B8" />
-            <g style={{ animation: "wheelSpin 0.7s linear infinite", transformOrigin: "0 0" }}>
+            <g style={{ animation: `wheelSpin 0.7s linear infinite ${direction === "left" ? "reverse" : "normal"}`, transformOrigin: "0 0" }}>
               <line x1="-6" y1="0" x2="6" y2="0" stroke="#CBD5E1" strokeWidth="1.5" />
               <line x1="0" y1="-6" x2="0" y2="6" stroke="#CBD5E1" strokeWidth="1.5" />
             </g>
@@ -237,7 +238,7 @@ export default function CargoTruck({
             <circle cx="0" cy="0" r="10" fill="#0F172A" />
             <circle cx="0" cy="0" r="7" fill="#475569" />
             <circle cx="0" cy="0" r="4" fill="#94A3B8" />
-            <g style={{ animation: "wheelSpin 0.7s linear infinite", transformOrigin: "0 0" }}>
+            <g style={{ animation: `wheelSpin 0.7s linear infinite ${direction === "left" ? "reverse" : "normal"}`, transformOrigin: "0 0" }}>
               <line x1="-6" y1="0" x2="6" y2="0" stroke="#CBD5E1" strokeWidth="1.5" />
               <line x1="0" y1="-6" x2="0" y2="6" stroke="#CBD5E1" strokeWidth="1.5" />
             </g>
@@ -248,7 +249,7 @@ export default function CargoTruck({
             <circle cx="0" cy="0" r="10" fill="#0F172A" />
             <circle cx="0" cy="0" r="7" fill="#475569" />
             <circle cx="0" cy="0" r="4" fill="#94A3B8" />
-            <g style={{ animation: "wheelSpin 0.7s linear infinite", transformOrigin: "0 0" }}>
+            <g style={{ animation: `wheelSpin 0.7s linear infinite ${direction === "left" ? "reverse" : "normal"}`, transformOrigin: "0 0" }}>
               <line x1="-6" y1="0" x2="6" y2="0" stroke="#CBD5E1" strokeWidth="1.5" />
               <line x1="0" y1="-6" x2="0" y2="6" stroke="#CBD5E1" strokeWidth="1.5" />
             </g>

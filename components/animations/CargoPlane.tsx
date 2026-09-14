@@ -5,6 +5,7 @@ import React from "react";
 export interface CargoPlaneProps {
   size?: "sm" | "md" | "lg" | number;
   speed?: number; // duration in seconds
+  direction?: "right" | "left";
   className?: string;
   animateFlight?: boolean;
   miniature?: boolean;
@@ -13,6 +14,7 @@ export interface CargoPlaneProps {
 export default function CargoPlane({
   size = "md",
   speed = 18,
+  direction = "right",
   className = "",
   animateFlight = true,
   miniature = false,
@@ -38,7 +40,7 @@ export default function CargoPlane({
 
   const flightStyle: React.CSSProperties = animateFlight
     ? {
-        animation: `planeFlight ${speed}s linear infinite`,
+        animation: `${direction === "left" ? "planeFlightReverse" : "planeFlight"} ${speed}s linear infinite`,
         willChange: "transform",
       }
     : {};
@@ -51,16 +53,28 @@ export default function CargoPlane({
       <div className="relative">
         {/* Contrail / Vapor Trail behind both jet engines */}
         {!miniature && (
-          <div className="absolute top-[48px] -left-28 flex flex-col gap-5 pointer-events-none">
+          <div
+            className={`absolute top-[48px] ${
+              direction === "left" ? "-right-28" : "-left-28"
+            } flex flex-col gap-5 pointer-events-none`}
+          >
             <div
-              className="h-[2px] bg-gradient-to-r from-transparent via-white/40 to-white/90 rounded-full"
+              className={`h-[2px] ${
+                direction === "left"
+                  ? "bg-gradient-to-l from-transparent via-white/40 to-white/90"
+                  : "bg-gradient-to-r from-transparent via-white/40 to-white/90"
+              } rounded-full`}
               style={{
                 animation: "contrailFade 1.8s linear infinite",
                 width: "120px",
               }}
             />
             <div
-              className="h-[2px] bg-gradient-to-r from-transparent via-white/40 to-white/90 rounded-full"
+              className={`h-[2px] ${
+                direction === "left"
+                  ? "bg-gradient-to-l from-transparent via-white/40 to-white/90"
+                  : "bg-gradient-to-r from-transparent via-white/40 to-white/90"
+              } rounded-full`}
               style={{
                 animation: "contrailFade 1.8s linear infinite",
                 animationDelay: "0.2s",
@@ -77,6 +91,10 @@ export default function CargoPlane({
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           className="overflow-visible drop-shadow-[0_8px_16px_rgba(0,0,0,0.35)]"
+          style={{
+            transformOrigin: "center",
+            transform: direction === "left" ? "scaleX(-1)" : "none",
+          }}
         >
           <defs>
             {/* Fuselage 3D Gradient */}
