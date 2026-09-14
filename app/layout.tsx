@@ -88,7 +88,7 @@ export default function RootLayout({
         <link rel="alternate" hrefLang="x-default" href="https://kcimportexport.com" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className="bg-[#F8F9FA] text-[#1A1A1A] font-sans antialiased min-h-screen flex flex-col selection:bg-[#F5A623]/30 selection:text-[#1B3A6B]">
+      <body suppressHydrationWarning className="bg-[#F8F9FA] text-[#1A1A1A] font-sans antialiased min-h-screen flex flex-col selection:bg-[#F5A623]/30 selection:text-[#1B3A6B]">
         <PublicShell>{children}</PublicShell>
       </body>
     </html>
