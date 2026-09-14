@@ -13,7 +13,8 @@ export const BLOG_POSTS: BlogPost[] = [
     publishedAt: "2026-09-10",
     readTime: "7 min read",
     tags: ["Agriculture", "Spices", "APEDA", "Export Guide", "Mundra Port"],
-    coverImage: "/images/cat-agricultural.jpg",
+    // Gemini: "Overhead flat lay of Indian agricultural export products — burlap sacks of cumin, turmeric, and coriander on wooden dock beside shipping manifests and APEDA certificate papers. Professional trade photography, warm natural light."
+    coverImage: "/images/blog/blog-agricultural-import-guide.png",
     content: `
 ### Navigating Agricultural Procurement from India
 
@@ -63,7 +64,8 @@ Partnering with an export house situated within 200 km of Mundra Port or Pipavav
     publishedAt: "2026-09-08",
     readTime: "6 min read",
     tags: ["HS Codes", "Customs", "Brass Components", "Flanges", "Tariffs"],
-    coverImage: "/images/cat-industrial.jpg",
+    // Gemini: "Close-up of official HS code tariff classification booklet open on a desk beside CNC brass machined parts, stainless flanges, and a digital vernier caliper. Clean industrial trade photography."
+    coverImage: "/images/blog/blog-hs-codes-industrial.png",
     content: `
 ### The Strategic Importance of Accurate HS Classification
 
@@ -106,7 +108,8 @@ Ensuring your export partner provides these documents linked to the specific shi
     publishedAt: "2026-09-04",
     readTime: "5 min read",
     tags: ["Gujarat", "Rajkot", "Manufacturing", "Foundry", "B2B Export"],
-    coverImage: "/images/about-facility.jpg",
+    // Gemini: "Aerial drone view of Mundra Port Gujarat at golden hour — rows of coloured shipping containers, cranes, and a cargo vessel departing. Professional commercial logistics photography."
+    coverImage: "/images/blog/blog-gujarat-export-hub.png",
     content: `
 ### The Industrial Heartland of Western India
 
@@ -144,7 +147,8 @@ This logistical proximity translates to lower domestic inland haulage costs and 
     publishedAt: "2026-08-28",
     readTime: "8 min read",
     tags: ["Documentation", "Bill of Lading", "Certificate of Origin", "Customs"],
-    coverImage: "/images/hero-export.jpg",
+    // Gemini: "Flat lay of B2B export documentation spread on white desk — Bill of Lading, Packing List, Certificate of Origin, Phytosanitary Certificate, and Commercial Invoice with a pen and stamp. Clean professional photography."
+    coverImage: "/images/blog/blog-export-documentation.png",
     content: `
 ### Protecting Your Shipment with Flawless Trade Documentation
 
@@ -175,7 +179,8 @@ To review our complete 6-stage quality and dispatch flow, check our [Export Proc
     publishedAt: "2026-08-20",
     readTime: "5 min read",
     tags: ["MOQ", "LCL vs FCL", "Procurement", "Ocean Freight", "B2B Trade"],
-    coverImage: "/images/cat-hardware.jpg",
+    // Gemini: "Stacked cargo pallets in a modern GIDC warehouse with MOQ labels, barcodes, and a logistics manager reviewing a shipping order on a tablet. Bright industrial lighting."
+    coverImage: "/images/blog/blog-moq-explained.png",
     content: `
 ### Understanding the Economics Behind MOQs
 

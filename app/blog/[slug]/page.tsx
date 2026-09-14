@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
+import BlogImage from "@/components/blog/BlogImage";
 
 interface BlogPostPageProps {
   params: {
@@ -175,13 +176,19 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         </div>
 
         {/* Hero Cover Image */}
-        <div className="relative h-72 sm:h-96 rounded-3xl overflow-hidden shadow-subtle border border-gray-200">
-          <Image
+        <div className="relative overflow-hidden aspect-video rounded-3xl shadow-subtle border border-gray-200">
+          {/* Gemini prompt comments for blog covers:
+              // Post 1: "Overhead flat lay of Indian agricultural export products — burlap sacks of cumin, turmeric, and coriander on wooden dock beside shipping manifests and APEDA certificate papers. Professional trade photography, warm natural light."
+              // Post 2: "Close-up of official HS code tariff classification booklet open on a desk beside CNC brass machined parts, stainless flanges, and a digital vernier caliper. Clean industrial trade photography."
+              // Post 3: "Aerial drone view of Mundra Port Gujarat at golden hour — rows of coloured shipping containers, cranes, and a cargo vessel departing. Professional commercial logistics photography."
+              // Post 4: "Flat lay of B2B export documentation spread on white desk — Bill of Lading, Packing List, Certificate of Origin, Phytosanitary Certificate, and Commercial Invoice with a pen and stamp. Clean professional photography."
+              // Post 5: "Stacked cargo pallets in a modern GIDC warehouse with MOQ labels, barcodes, and a logistics manager reviewing a shipping order on a tablet. Bright industrial lighting."
+          */}
+          <BlogImage
             src={post.coverImage}
             alt={post.title}
-            fill
+            category={post.category}
             priority
-            className="object-cover"
           />
         </div>
 

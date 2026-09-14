@@ -6,6 +6,7 @@ import { BLOG_POSTS } from "@/lib/blog-data";
 import { Calendar, Clock, ArrowRight, BookOpen, Tag, ArrowUpRight } from "lucide-react";
 
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
+import BlogImage from "@/components/blog/BlogImage";
 
 export const metadata: Metadata = {
   title: "B2B Export Insights & Trade Guides | KC Import Export",
@@ -61,14 +62,16 @@ export default function BlogListingPage() {
         {/* Featured Post Card */}
         {featuredPost && (
           <div className="bg-white rounded-3xl border border-gray-200/90 shadow-subtle overflow-hidden hover:shadow-card transition duration-300 grid grid-cols-1 lg:grid-cols-12 group">
-            <div className="lg:col-span-6 relative min-h-[260px] lg:min-h-full bg-gray-100 overflow-hidden">
-              <Image
+            <div className="lg:col-span-6 relative overflow-hidden aspect-video lg:aspect-auto lg:min-h-full bg-gray-100">
+              {/* Gemini: "Overhead flat lay of Indian agricultural export products — burlap sacks of cumin, turmeric, and coriander on wooden dock beside shipping manifests and APEDA certificate papers. Professional trade photography, warm natural light." */}
+              <BlogImage
                 src={featuredPost.coverImage}
                 alt={featuredPost.title}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                category={featuredPost.category}
+                priority
+                className="group-hover:scale-105 transition-transform duration-500"
               />
-              <div className="absolute top-4 left-4 bg-[#1B3A6B] text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-md">
+              <div className="absolute top-4 left-4 bg-[#1B3A6B] text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-md z-10">
                 Featured Guide
               </div>
             </div>
@@ -133,14 +136,18 @@ export default function BlogListingPage() {
               key={post.slug}
               className="bg-white rounded-2xl border border-gray-200/90 shadow-subtle overflow-hidden hover:shadow-card transition duration-300 flex flex-col justify-between group"
             >
-              <div className="relative h-48 bg-gray-100 overflow-hidden">
-                <Image
+              <div className="relative overflow-hidden aspect-video bg-gray-100">
+                {/* Gemini: "Close-up of official HS code tariff classification booklet open on a desk beside CNC brass machined parts, stainless flanges, and a digital vernier caliper. Clean industrial trade photography." */}
+                {/* Gemini: "Aerial drone view of Mundra Port Gujarat at golden hour — rows of coloured shipping containers, cranes, and a cargo vessel departing. Professional commercial logistics photography." */}
+                {/* Gemini: "Flat lay of B2B export documentation spread on white desk — Bill of Lading, Packing List, Certificate of Origin, Phytosanitary Certificate, and Commercial Invoice with a pen and stamp. Clean professional photography." */}
+                {/* Gemini: "Stacked cargo pallets in a modern GIDC warehouse with MOQ labels, barcodes, and a logistics manager reviewing a shipping order on a tablet. Bright industrial lighting." */}
+                <BlogImage
                   src={post.coverImage}
                   alt={post.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  category={post.category}
+                  className="group-hover:scale-105 transition-transform duration-500"
                 />
-                <span className="absolute top-3 left-3 bg-[#1B3A6B] text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-xs">
+                <span className="absolute top-3 left-3 bg-[#1B3A6B] text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-xs z-10">
                   {post.category}
                 </span>
               </div>
