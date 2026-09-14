@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { Copy, Check, Bot, User } from "lucide-react";
 import { ChatMessage as ChatMessageType } from "@/lib/ai-types";
 
@@ -67,6 +68,7 @@ function formatInlineMarkdown(text: string): string {
 export default function ChatMessage({ message }: ChatMessageProps) {
   const isUser = message.role === "user";
   const [copied, setCopied] = useState(false);
+  const reduced = useReducedMotion();
 
   const handleCopy = async () => {
     try {
@@ -79,8 +81,11 @@ export default function ChatMessage({ message }: ChatMessageProps) {
   };
 
   return (
-    <div
-      className={`group flex flex-col my-3 animate-fade-in-up ${
+    <motion.div
+      initial={reduced ? undefined : { opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: reduced ? 0.01 : 0.25, ease: "easeOut" }}
+      className={`group flex flex-col my-3 ${
         isUser ? "items-end" : "items-start"
       }`}
     >
@@ -139,6 +144,6 @@ export default function ChatMessage({ message }: ChatMessageProps) {
       <span className="text-[10px] text-gray-400 mt-1 px-9 select-none">
         {message.timestamp}
       </span>
-    </div>
+    </motion.div>
   );
 }

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
   Bot,
   X,
@@ -34,6 +35,7 @@ export default function AIChatWidget() {
   const [isRFQModalOpen, setIsRFQModalOpen] = useState(false);
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
   const [detectedLang, setDetectedLang] = useState<string | null>(null);
+  const reduced = useReducedMotion();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -220,134 +222,153 @@ export default function AIChatWidget() {
   return (
     <>
       {/* Floating Launcher Button */}
-      {!isOpen && (
-        <aside className="fixed bottom-6 right-6 z-50">
-          <button
-            onClick={() => setIsOpen(true)}
-            aria-label="Open AI Sales Assistant"
-            className="pulse-ring btn-glow flex items-center gap-2.5 px-4 py-3 bg-gradient-to-r from-[#F5A623] to-amber-500 hover:from-amber-500 hover:to-amber-600 text-gray-950 font-bold text-sm rounded-full shadow-lg border-2 border-white/80 group transform transition-all duration-200 hover:scale-105 active:scale-95"
+      <AnimatePresence>
+        {!isOpen && (
+          <motion.aside
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.2 }}
+            className="fixed bottom-6 right-6 z-50"
           >
-            <div className="relative">
-              <Bot className="w-5 h-5 text-gray-950 transition-transform group-hover:rotate-12" />
-              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-[#1B3A6B] border border-white"></span>
-            </div>
-            <span>Ask AI</span>
-            <span className="text-[10px] uppercase font-semibold bg-[#1B3A6B] text-white px-1.5 py-0.5 rounded-sm">
-              B2B
-            </span>
-          </button>
-        </aside>
-      )}
+            <motion.button
+              onClick={() => setIsOpen(true)}
+              aria-label="Open AI Sales Assistant"
+              whileHover={reduced ? undefined : { scale: 1.1 }}
+              whileTap={reduced ? undefined : { scale: 0.9 }}
+              className="pulse-ring btn-glow flex items-center gap-2.5 px-4 py-3 bg-gradient-to-r from-[#F5A623] to-amber-500 hover:from-amber-500 hover:to-amber-600 text-gray-950 font-bold text-sm rounded-full shadow-lg border-2 border-white/80 group"
+            >
+              <div className="relative">
+                <Bot className="w-5 h-5 text-gray-950 transition-transform group-hover:rotate-12" />
+                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-[#1B3A6B] border border-white"></span>
+              </div>
+              <span>Ask AI</span>
+              <span className="text-[10px] uppercase font-semibold bg-[#1B3A6B] text-white px-1.5 py-0.5 rounded-sm">
+                B2B
+              </span>
+            </motion.button>
+          </motion.aside>
+        )}
+      </AnimatePresence>
 
       {/* Expanded Chat Panel with smooth scale & opacity transition */}
-      {isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-[410px] max-w-[calc(100vw-24px)] h-[580px] max-h-[calc(100vh-48px)] max-sm:inset-0 max-sm:w-full max-sm:h-full max-sm:max-h-full max-sm:bottom-0 max-sm:right-0 bg-white rounded-2xl max-sm:rounded-none shadow-2xl border border-gray-200 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-          {/* Header */}
-          <div className="px-4 py-3 bg-[#1B3A6B] text-white flex items-center justify-between shrink-0 shadow-xs">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
-                <Bot className="w-4 h-4 text-[#F5A623]" />
-              </div>
-              <div>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <h3 className="text-sm font-bold tracking-tight">
-                    KC AI Sales Assistant
-                  </h3>
-                  {leadIntent && (
-                    <LeadScoreBadge
-                      intent={leadIntent}
-                      reason={intentReason}
-                      size="sm"
-                    />
-                  )}
-                  {detectedLang && (
-                    <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-amber-500/20 text-amber-300 font-semibold border border-amber-500/30">
-                      Responding in {detectedLang}
-                    </span>
-                  )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.9 }}
+            transition={{ duration: reduced ? 0.01 : 0.22, ease: "easeOut" }}
+            style={{ transformOrigin: "bottom right" }}
+            className="fixed bottom-6 right-6 z-50 w-[410px] max-w-[calc(100vw-24px)] h-[580px] max-h-[calc(100vh-48px)] max-sm:inset-0 max-sm:w-full max-sm:h-full max-sm:max-h-full max-sm:bottom-0 max-sm:right-0 bg-white rounded-2xl max-sm:rounded-none shadow-2xl border border-gray-200 flex flex-col overflow-hidden"
+          >
+            {/* Header */}
+            <div className="px-4 py-3 bg-[#1B3A6B] text-white flex items-center justify-between shrink-0 shadow-xs">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
+                  <Bot className="w-4 h-4 text-[#F5A623]" />
                 </div>
-                <p className="text-[11px] text-blue-200 flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-[#F5A623]" />
-                  Powered by Groq Llama 3.3
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-1">
-              <button
-                onClick={resetChat}
-                title="Restart conversation"
-                className="p-1.5 text-blue-200 hover:text-white hover:bg-white/10 rounded-lg transition"
-              >
-                <RotateCcw className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setIsOpen(false)}
-                title="Minimize chat"
-                className="p-1.5 text-blue-200 hover:text-white hover:bg-white/10 rounded-lg transition"
-              >
-                <Minus className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          {/* Chat Messages Area */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-1 bg-gradient-to-b from-gray-50/50 to-white">
-            {messages.map((msg) => (
-              <ChatMessage key={msg.id} message={msg} />
-            ))}
-
-            {/* Structured RFQ Card when detected */}
-            {activeRFQ && (
-              <RFQSummaryCard
-                rfq={activeRFQ}
-                onEdit={() => setIsRFQModalOpen(true)}
-              />
-            )}
-
-            {/* Typing indicator */}
-            {isTyping && <AITypingIndicator />}
-
-            {/* WhatsApp Handoff CTA (Appears after 3 user messages) */}
-            {userMessagesCount >= 3 && (
-              <div className="p-3 my-3 rounded-xl bg-emerald-50 border border-emerald-200/90 text-emerald-950 flex items-center justify-between gap-3 text-xs animate-in fade-in">
-                <div className="flex items-center gap-2">
-                  <MessageCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Need an immediate Proforma or custom packing?</span>
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="text-sm font-bold tracking-tight">
+                      KC AI Sales Assistant
+                    </h3>
+                    {leadIntent && (
+                      <LeadScoreBadge
+                        intent={leadIntent}
+                        reason={intentReason}
+                        size="sm"
+                      />
+                    )}
+                    {detectedLang && (
+                      <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-amber-500/20 text-amber-300 font-semibold border border-amber-500/30">
+                        Responding in {detectedLang}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-blue-200 flex items-center gap-1">
+                    <Sparkles className="w-3 h-3 text-[#F5A623]" />
+                    Powered by Groq Llama 3.3
+                  </p>
                 </div>
-                <a
-                  href="https://wa.me/919876543210?text=Hello%20KC%20Export%20Desk%2C%20I%20am%20chatting%20with%20your%20AI%20and%20need%20a%20commercial%20quote."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="shrink-0 px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg inline-flex items-center gap-1 transition"
+              </div>
+
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={resetChat}
+                  title="Restart conversation"
+                  className="p-1.5 text-blue-200 hover:text-white hover:bg-white/10 rounded-lg transition"
                 >
-                  WhatsApp
-                  <ExternalLink className="w-3 h-3" />
-                </a>
+                  <RotateCcw className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  title="Minimize chat"
+                  className="p-1.5 text-blue-200 hover:text-white hover:bg-white/10 rounded-lg transition"
+                >
+                  <Minus className="w-4 h-4" />
+                </button>
               </div>
-            )}
+            </div>
 
-            {/* Limit Warning when 20 reached */}
-            {userMessagesCount >= MAX_MESSAGES && (
-              <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
-                <span>
-                  You have reached the session limit. For detailed orders,
-                  please contact our commercial export desk directly.
-                </span>
-              </div>
-            )}
+            {/* Chat Messages Area */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-1 bg-gradient-to-b from-gray-50/50 to-white">
+              {messages.map((msg) => (
+                <ChatMessage key={msg.id} message={msg} />
+              ))}
 
-            <div ref={messagesEndRef} />
-          </div>
+              {/* Structured RFQ Card when detected */}
+              {activeRFQ && (
+                <RFQSummaryCard
+                  rfq={activeRFQ}
+                  onEdit={() => setIsRFQModalOpen(true)}
+                />
+              )}
 
-          {/* Bottom Chat Input */}
-          <ChatInput
-            onSendMessage={handleSendMessage}
-            disabled={isTyping || userMessagesCount >= MAX_MESSAGES}
-          />
-        </div>
-      )}
+              {/* Typing indicator */}
+              {isTyping && <AITypingIndicator />}
+
+              {/* WhatsApp Handoff CTA (Appears after 3 user messages) */}
+              {userMessagesCount >= 3 && (
+                <div className="p-3 my-3 rounded-xl bg-emerald-50 border border-emerald-200/90 text-emerald-950 flex items-center justify-between gap-3 text-xs animate-in fade-in">
+                  <div className="flex items-center gap-2">
+                    <MessageCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>Need an immediate Proforma or custom packing?</span>
+                  </div>
+                  <a
+                    href="https://wa.me/919876543210?text=Hello%20KC%20Export%20Desk%2C%20I%20am%20chatting%20with%20your%20AI%20and%20need%20a%20commercial%20quote."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="shrink-0 px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg inline-flex items-center gap-1 transition"
+                  >
+                    WhatsApp
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              )}
+
+              {/* Limit Warning when 20 reached */}
+              {userMessagesCount >= MAX_MESSAGES && (
+                <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span>
+                    You have reached the session limit. For detailed orders,
+                    please contact our commercial export desk directly.
+                  </span>
+                </div>
+              )}
+
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* Bottom Chat Input */}
+            <ChatInput
+              onSendMessage={handleSendMessage}
+              disabled={isTyping || userMessagesCount >= MAX_MESSAGES}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Edit RFQ Modal Hand-off */}
       <RFQModal

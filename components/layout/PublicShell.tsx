@@ -7,6 +7,8 @@ import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
 import AIChatWidget from "@/components/ai/AIChatWidget";
 import CookieBanner from "@/components/ui/CookieBanner";
+import PageTransition from "@/components/animations/PageTransition";
+import RouteProgressBar from "@/components/animations/RouteProgressBar";
 
 interface PublicShellProps {
   children: React.ReactNode;
@@ -23,6 +25,9 @@ export default function PublicShell({ children }: PublicShellProps) {
 
   return (
     <>
+      {/* Route Progress Bar */}
+      <RouteProgressBar />
+
       {/* Accessibility Skip Link */}
       <a
         href="#main-content"
@@ -34,9 +39,9 @@ export default function PublicShell({ children }: PublicShellProps) {
       {/* Public Header */}
       <Navbar />
 
-      {/* Public Main Body */}
-      <main id="main-content" className="flex-grow">
-        {children}
+      {/* Public Main Body with Smooth Page Transitions */}
+      <main id="main-content" className="flex-grow flex flex-col">
+        <PageTransition>{children}</PageTransition>
       </main>
 
       {/* Public Footer */}

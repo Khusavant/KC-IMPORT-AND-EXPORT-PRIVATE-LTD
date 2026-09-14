@@ -1,7 +1,10 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import { motion, useReducedMotion, Variants } from "framer-motion";
 import { ArrowRight, ShieldCheck, Ship, Globe2 } from "lucide-react";
 
 const PortScene = dynamic(() => import("@/components/animations/PortScene"), {
@@ -9,6 +12,27 @@ const PortScene = dynamic(() => import("@/components/animations/PortScene"), {
 });
 
 export default function Hero() {
+  const reduced = useReducedMotion();
+
+  const containerVariants: Variants = {
+    hidden: { opacity: reduced ? 1 : 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: reduced ? 0 : 0.15,
+      },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: reduced ? { opacity: 0 } : { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: reduced ? 0.01 : 0.5, ease: "easeOut" },
+    },
+  };
+
   return (
     <section className="relative overflow-hidden bg-[#0B172B] text-white py-16 sm:py-24 lg:py-28 noise-overlay">
       {/* 3D Animated Port Scene Background Layer */}
@@ -21,58 +45,94 @@ export default function Hero() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column: Copy & CTAs */}
-          <div className="lg:col-span-7 space-y-7 text-left">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="lg:col-span-7 space-y-7 text-left"
+          >
             {/* Trust badge */}
-            <div className="animate-fade-in-up inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-semibold text-amber-300">
+            <motion.div
+              variants={itemVariants}
+              className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-semibold text-amber-300"
+            >
               <span className="w-2 h-2 rounded-full bg-[#F5A623] animate-pulse" />
               <span>Direct Gujarat Export Hub • Rajkot, India</span>
-            </div>
+            </motion.div>
 
             {/* Main Headline with stagger delay */}
-            <h1
-              className="animate-fade-in-up text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight font-serif"
-              style={{ animationDelay: "0.15s" }}
+            <motion.h1
+              variants={itemVariants}
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight font-serif"
             >
               Your Trusted Export Partner from{" "}
               <span className="text-[#F5A623]">India</span>
-            </h1>
+            </motion.h1>
 
             {/* Subheading with stagger delay */}
-            <p
-              className="animate-fade-in-up text-base sm:text-lg text-gray-200/90 max-w-2xl leading-relaxed font-normal"
-              style={{ animationDelay: "0.3s" }}
+            <motion.p
+              variants={itemVariants}
+              className="text-base sm:text-lg text-gray-200/90 max-w-2xl leading-relaxed font-normal"
             >
               Connecting international buyers, distributors, and global enterprises
               with certified, precision-manufactured, and verified products from
               the industrial heart of Gujarat. Seamless export documentation,
               rigorous quality assurance, and direct container shipping.
-            </p>
+            </motion.p>
 
-            {/* Two CTA Buttons with stagger delay */}
-            <div
-              className="animate-fade-in-up flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2"
-              style={{ animationDelay: "0.45s" }}
+            {/* Two CTA Buttons with whileHover & whileTap */}
+            <motion.div
+              variants={itemVariants}
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2"
             >
-              <Link
-                href="/products"
-                className="btn-glow inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-[#F5A623] hover:bg-[#e09315] text-[#1B3A6B] font-bold text-base shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#F5A623] focus:ring-offset-2 focus:ring-offset-[#1B3A6B]"
+              <motion.div
+                whileHover={
+                  reduced
+                    ? undefined
+                    : {
+                        y: -3,
+                        boxShadow: "0 10px 25px -5px rgba(245, 166, 35, 0.4)",
+                      }
+                }
+                whileTap={reduced ? undefined : { scale: 0.97 }}
+                transition={{ duration: 0.2 }}
+                className="inline-flex rounded-xl"
               >
-                <span>Explore Products</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+                <Link
+                  href="/products"
+                  className="btn-glow w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-[#F5A623] hover:bg-[#e09315] text-[#1B3A6B] font-bold text-base shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#F5A623] focus:ring-offset-2 focus:ring-offset-[#1B3A6B]"
+                >
+                  <span>Explore Products</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </motion.div>
 
-              <Link
-                href="/contact"
-                className="btn-glow-navy inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl border-2 border-white/80 text-white hover:bg-white hover:text-[#1B3A6B] font-bold text-base transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#1B3A6B]"
+              <motion.div
+                whileHover={
+                  reduced
+                    ? undefined
+                    : {
+                        y: -3,
+                        boxShadow: "0 10px 25px -5px rgba(255, 255, 255, 0.3)",
+                      }
+                }
+                whileTap={reduced ? undefined : { scale: 0.97 }}
+                transition={{ duration: 0.2 }}
+                className="inline-flex rounded-xl"
               >
-                <span>Request a Quote</span>
-              </Link>
-            </div>
+                <Link
+                  href="/contact"
+                  className="btn-glow-navy w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl border-2 border-white/80 text-white hover:bg-white hover:text-[#1B3A6B] font-bold text-base transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#1B3A6B]"
+                >
+                  <span>Request a Quote</span>
+                </Link>
+              </motion.div>
+            </motion.div>
 
             {/* Key trust indicators below CTAs */}
-            <div
-              className="animate-fade-in-up pt-6 border-t border-white/15 grid grid-cols-3 gap-4 text-xs text-gray-300"
-              style={{ animationDelay: "0.6s" }}
+            <motion.div
+              variants={itemVariants}
+              className="pt-6 border-t border-white/15 grid grid-cols-3 gap-4 text-xs text-gray-300"
             >
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-[#F5A623]" />
@@ -86,8 +146,8 @@ export default function Hero() {
                 <Globe2 className="w-4 h-4 text-[#F5A623]" />
                 <span>Global Incoterms 2020</span>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Right Column: Hero Visual Card with animate-float */}
           <div className="lg:col-span-5">

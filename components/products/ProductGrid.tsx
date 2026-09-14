@@ -4,6 +4,7 @@ import React from "react";
 import { Product } from "@/lib/products";
 import ProductCard from "./ProductCard";
 import { PackageSearch, RotateCcw } from "lucide-react";
+import { StaggerList, StaggerItem } from "@/components/animations/StaggerList";
 
 interface ProductGridProps {
   products: Product[];
@@ -56,12 +57,14 @@ export default function ProductGrid({
         </span>
       </div>
 
-      {/* 3-Col Desktop, 2-Col Tablet, 1-Col Mobile Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      {/* 3-Col Desktop, 2-Col Tablet, 1-Col Mobile Staggered Grid */}
+      <StaggerList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <StaggerItem key={product.id}>
+            <ProductCard product={product} />
+          </StaggerItem>
         ))}
-      </div>
+      </StaggerList>
     </div>
   );
 }

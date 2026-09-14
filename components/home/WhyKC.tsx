@@ -11,6 +11,7 @@ import {
   BadgeCheck,
 } from "lucide-react";
 import { useInView } from "@/lib/hooks/useInView";
+import { StaggerList, StaggerItem } from "@/components/animations/StaggerList";
 
 // Map Lucide icons for each differentiator (Zero system emojis used)
 const ICON_MAP = {
@@ -42,44 +43,39 @@ export default function WhyKC() {
           </p>
         </div>
 
-        {/* 6 Differentiator Cards Grid with stagger-children and card-hover */}
-        <div
-          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ${
-            inView ? "stagger-children" : "opacity-0"
-          }`}
-        >
+        {/* 6 Differentiator Cards Grid with StaggerList */}
+        <StaggerList className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {WHY_KC_POINTS.map((point) => {
             const Icon =
               ICON_MAP[point.icon as keyof typeof ICON_MAP] || ShieldCheck;
 
             return (
-              <div
-                key={point.id}
-                className="relative card-hover bg-white rounded-2xl p-7 border border-gray-200/90 shadow-subtle group flex flex-col justify-between overflow-hidden transition-all duration-300"
-              >
-                {/* Left amber border accent that expands on hover */}
-                <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-10 bg-amber-400/40 group-hover:h-full group-hover:w-2 group-hover:bg-[#F5A623] rounded-l-2xl transition-all duration-300 pointer-events-none" />
+              <StaggerItem key={point.id}>
+                <div className="relative card-hover bg-white rounded-2xl p-7 border border-gray-200/90 shadow-subtle group flex flex-col justify-between overflow-hidden transition-all duration-300 h-full">
+                  {/* Left amber border accent that expands on hover */}
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-10 bg-amber-400/40 group-hover:h-full group-hover:w-2 group-hover:bg-[#F5A623] rounded-l-2xl transition-all duration-300 pointer-events-none" />
 
-                <div>
-                  <div className="w-13 h-13 w-fit p-3.5 rounded-xl bg-blue-50 text-[#1B3A6B] group-hover:bg-[#F5A623] group-hover:text-white transition-colors duration-200 mb-5">
-                    <Icon className="w-6 h-6" />
+                  <div>
+                    <div className="w-13 h-13 w-fit p-3.5 rounded-xl bg-blue-50 text-[#1B3A6B] group-hover:bg-[#F5A623] group-hover:text-white transition-colors duration-200 mb-5">
+                      <Icon className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-lg font-bold text-[#1B3A6B] font-serif mb-2.5">
+                      {point.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      {point.description}
+                    </p>
                   </div>
-                  <h3 className="text-lg font-bold text-[#1B3A6B] font-serif mb-2.5">
-                    {point.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    {point.description}
-                  </p>
-                </div>
 
-                <div className="mt-6 pt-4 border-t border-gray-100 flex items-center gap-2 text-xs font-semibold text-gray-500">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#F5A623]" />
-                  <span>Standardized Export Protocol</span>
+                  <div className="mt-6 pt-4 border-t border-gray-100 flex items-center gap-2 text-xs font-semibold text-gray-500">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#F5A623]" />
+                    <span>Standardized Export Protocol</span>
+                  </div>
                 </div>
-              </div>
+              </StaggerItem>
             );
           })}
-        </div>
+        </StaggerList>
       </div>
     </section>
   );

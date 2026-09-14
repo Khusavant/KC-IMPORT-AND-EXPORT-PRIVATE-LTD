@@ -7,6 +7,8 @@ import { Calendar, Clock, ArrowRight, BookOpen, Tag, ArrowUpRight } from "lucide
 
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import BlogImage from "@/components/blog/BlogImage";
+import { StaggerList, StaggerItem } from "@/components/animations/StaggerList";
+import SmoothLink from "@/components/animations/SmoothLink";
 
 export const metadata: Metadata = {
   title: "B2B Export Insights & Trade Guides | KC Import Export",
@@ -117,88 +119,89 @@ export default function BlogListingPage() {
                   ))}
                 </div>
 
-                <Link
+                <SmoothLink
                   href={`/blog/${featuredPost.slug}`}
                   className="inline-flex items-center gap-1 text-sm font-bold text-[#1B3A6B] hover:text-[#F5A623] transition group-hover:translate-x-1 duration-200"
                 >
                   <span>Read Guide</span>
                   <ArrowRight className="w-4 h-4" />
-                </Link>
+                </SmoothLink>
               </div>
             </div>
           </div>
         )}
 
         {/* Regular Posts Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <StaggerList className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {regularPosts.map((post) => (
-            <article
-              key={post.slug}
-              className="bg-white rounded-2xl border border-gray-200/90 shadow-subtle overflow-hidden hover:shadow-card transition duration-300 flex flex-col justify-between group"
-            >
-              <div className="relative overflow-hidden aspect-video bg-gray-100">
-                {/* Gemini: "Close-up of official HS code tariff classification booklet open on a desk beside CNC brass machined parts, stainless flanges, and a digital vernier caliper. Clean industrial trade photography." */}
-                {/* Gemini: "Aerial drone view of Mundra Port Gujarat at golden hour — rows of coloured shipping containers, cranes, and a cargo vessel departing. Professional commercial logistics photography." */}
-                {/* Gemini: "Flat lay of B2B export documentation spread on white desk — Bill of Lading, Packing List, Certificate of Origin, Phytosanitary Certificate, and Commercial Invoice with a pen and stamp. Clean professional photography." */}
-                {/* Gemini: "Stacked cargo pallets in a modern GIDC warehouse with MOQ labels, barcodes, and a logistics manager reviewing a shipping order on a tablet. Bright industrial lighting." */}
-                <BlogImage
-                  src={post.coverImage}
-                  alt={post.title}
-                  category={post.category}
-                  className="group-hover:scale-105 transition-transform duration-500"
-                />
-                <span className="absolute top-3 left-3 bg-[#1B3A6B] text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-xs z-10">
-                  {post.category}
-                </span>
-              </div>
-
-              <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-3 text-xs text-gray-400">
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      {post.readTime}
-                    </span>
-                    <span>•</span>
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-3 h-3" />
-                      {post.publishedAt}
-                    </span>
-                  </div>
-
-                  <h3 className="text-base font-bold text-gray-900 font-serif leading-snug group-hover:text-[#1B3A6B] transition line-clamp-2">
-                    <Link href={`/blog/${post.slug}`}>{post.title}</Link>
-                  </h3>
-
-                  <p className="text-xs text-gray-600 leading-relaxed line-clamp-3">
-                    {post.excerpt}
-                  </p>
+            <StaggerItem key={post.slug} className="h-full">
+              <article
+                className="bg-white rounded-2xl border border-gray-200/90 shadow-subtle overflow-hidden hover:shadow-card transition duration-300 flex flex-col justify-between group h-full"
+              >
+                <div className="relative overflow-hidden aspect-video bg-gray-100">
+                  {/* Gemini: "Close-up of official HS code tariff classification booklet open on a desk beside CNC brass machined parts, stainless flanges, and a digital vernier caliper. Clean industrial trade photography." */}
+                  {/* Gemini: "Aerial drone view of Mundra Port Gujarat at golden hour — rows of coloured shipping containers, cranes, and a cargo vessel departing. Professional commercial logistics photography." */}
+                  {/* Gemini: "Flat lay of B2B export documentation spread on white desk — Bill of Lading, Packing List, Certificate of Origin, Phytosanitary Certificate, and Commercial Invoice with a pen and stamp. Clean professional photography." */}
+                  {/* Gemini: "Stacked cargo pallets in a modern GIDC warehouse with MOQ labels, barcodes, and a logistics manager reviewing a shipping order on a tablet. Bright industrial lighting." */}
+                  <BlogImage
+                    src={post.coverImage}
+                    alt={post.title}
+                    category={post.category}
+                    className="group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <span className="absolute top-3 left-3 bg-[#1B3A6B] text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-xs z-10">
+                    {post.category}
+                  </span>
                 </div>
 
-                <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
-                  <div className="flex flex-wrap gap-1">
-                    {post.tags.slice(0, 2).map((t, idx) => (
-                      <span
-                        key={idx}
-                        className="text-[10px] px-2 py-0.5 rounded bg-gray-100 text-gray-600"
-                      >
-                        #{t}
+                <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-3 text-xs text-gray-400">
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {post.readTime}
                       </span>
-                    ))}
+                      <span>•</span>
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        {post.publishedAt}
+                      </span>
+                    </div>
+
+                    <h3 className="text-base font-bold text-gray-900 font-serif leading-snug group-hover:text-[#1B3A6B] transition line-clamp-2">
+                      <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                    </h3>
+
+                    <p className="text-xs text-gray-600 leading-relaxed line-clamp-3">
+                      {post.excerpt}
+                    </p>
                   </div>
 
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="inline-flex items-center gap-1 text-xs font-bold text-[#1B3A6B] hover:text-[#F5A623] transition"
-                  >
-                    <span>Read</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </Link>
+                  <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
+                    <div className="flex flex-wrap gap-1">
+                      {post.tags.slice(0, 2).map((t, idx) => (
+                        <span
+                          key={idx}
+                          className="text-[10px] px-2 py-0.5 rounded bg-gray-100 text-gray-600"
+                        >
+                          #{t}
+                        </span>
+                      ))}
+                    </div>
+
+                    <SmoothLink
+                      href={`/blog/${post.slug}`}
+                      className="inline-flex items-center gap-1 text-xs font-bold text-[#1B3A6B] hover:text-[#F5A623] transition"
+                    >
+                      <span>Read</span>
+                      <ArrowUpRight className="w-3.5 h-3.5" />
+                    </SmoothLink>
+                  </div>
                 </div>
-              </div>
-            </article>
+              </article>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerList>
       </div>
     </div>
   );

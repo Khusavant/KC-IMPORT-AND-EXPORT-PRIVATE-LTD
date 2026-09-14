@@ -1,6 +1,9 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { StaggerList, StaggerItem } from "@/components/animations/StaggerList";
 import { PRODUCT_CATEGORIES } from "@/lib/constants";
 import {
   Wheat,
@@ -57,75 +60,74 @@ export default function CategoryCards() {
           </p>
         </div>
 
-        {/* 6 Product Category Cards Grid with stagger-children */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children">
+        {/* 6 Product Category Cards Grid with StaggerList */}
+        <StaggerList className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {PRODUCT_CATEGORIES.map((cat) => {
             const IconComponent =
               ICON_MAP[cat.icon as keyof typeof ICON_MAP] || Package;
             const prompt = IMAGE_PROMPTS[cat.id];
 
             return (
-              <div
-                key={cat.id}
-                className="group relative card-hover bg-white rounded-2xl overflow-hidden border border-gray-200/90 shadow-subtle flex flex-col transition-all duration-300 hover:border-transparent"
-              >
-                {/* Gradient Border on hover */}
-                <div className="absolute -inset-[2px] rounded-[18px] bg-gradient-to-r from-[#1B3A6B] to-[#F5A623] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none -z-10" />
+              <StaggerItem key={cat.id}>
+                <div className="group relative card-hover bg-white rounded-2xl overflow-hidden border border-gray-200/90 shadow-subtle flex flex-col transition-all duration-300 hover:border-transparent h-full">
+                  {/* Gradient Border on hover */}
+                  <div className="absolute -inset-[2px] rounded-[18px] bg-gradient-to-r from-[#1B3A6B] to-[#F5A623] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none -z-10" />
 
-                {/* Image Container with Prompt Comment */}
-                <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
-                  {/*
-                    GEMINI IMAGE PROMPT:
-                    "{prompt}"
-                  */}
-                  <Image
-                    src={cat.image}
-                    alt={`${cat.name} export products from Gujarat India`}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                  {/* Image Container with Prompt Comment */}
+                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
+                    {/*
+                      GEMINI IMAGE PROMPT:
+                      "{prompt}"
+                    */}
+                    <Image
+                      src={cat.image}
+                      alt={`${cat.name} export products from Gujarat India`}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
-                  {/* Category Lucide Icon Badge */}
-                  <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-white/95 backdrop-blur shadow-md flex items-center justify-center text-[#1B3A6B] group-hover:bg-[#F5A623] group-hover:text-white transition-colors duration-200">
-                    <IconComponent className="w-5 h-5" />
+                    {/* Category Lucide Icon Badge */}
+                    <div className="absolute top-4 left-4 w-11 h-11 rounded-xl bg-white/95 backdrop-blur shadow-md flex items-center justify-center text-[#1B3A6B] group-hover:bg-[#F5A623] group-hover:text-white transition-colors duration-200">
+                      <IconComponent className="w-5 h-5" />
+                    </div>
+
+                    {/* Featured Tag */}
+                    <div className="absolute bottom-3 left-4">
+                      <span className="text-[11px] font-semibold text-white bg-[#1B3A6B]/80 backdrop-blur px-2.5 py-1 rounded-md">
+                        {cat.featuredCount}
+                      </span>
+                    </div>
                   </div>
 
-                  {/* Featured Tag */}
-                  <div className="absolute bottom-3 left-4">
-                    <span className="text-[11px] font-semibold text-white bg-[#1B3A6B]/80 backdrop-blur px-2.5 py-1 rounded-md">
-                      {cat.featuredCount}
-                    </span>
+                  {/* Card Body */}
+                  <div className="p-6 flex flex-col flex-grow justify-between space-y-4 bg-white rounded-b-2xl">
+                    <div>
+                      <h3 className="text-xl font-bold text-[#1B3A6B] group-hover:text-[#12284b] transition-colors font-serif">
+                        {cat.name}
+                      </h3>
+                      <p className="text-gray-600 text-sm mt-2 leading-relaxed">
+                        {cat.description}
+                      </p>
+                    </div>
+
+                    {/* Card Action Link */}
+                    <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
+                      <Link
+                        href={`/products?category=${cat.id}`}
+                        className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#1B3A6B] hover:text-[#F5A623] transition-colors"
+                      >
+                        <span>Explore Category</span>
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                    </div>
                   </div>
                 </div>
-
-                {/* Card Body */}
-                <div className="p-6 flex flex-col flex-grow justify-between space-y-4 bg-white rounded-b-2xl">
-                  <div>
-                    <h3 className="text-xl font-bold text-[#1B3A6B] group-hover:text-[#12284b] transition-colors font-serif">
-                      {cat.name}
-                    </h3>
-                    <p className="text-gray-600 text-sm mt-2 leading-relaxed">
-                      {cat.description}
-                    </p>
-                  </div>
-
-                  {/* Card Action Link */}
-                  <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
-                    <Link
-                      href={`/products?category=${cat.id}`}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#1B3A6B] hover:text-[#F5A623] transition-colors"
-                    >
-                      <span>Explore Category</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </div>
-                </div>
-              </div>
+              </StaggerItem>
             );
           })}
-        </div>
+        </StaggerList>
       </div>
     </section>
   );

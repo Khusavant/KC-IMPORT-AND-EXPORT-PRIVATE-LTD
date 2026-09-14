@@ -5,6 +5,7 @@ import CompanySnapshot from "@/components/home/CompanySnapshot";
 import WhyKC from "@/components/home/WhyKC";
 import ExportProcess from "@/components/home/ExportProcess";
 import FinalCTA from "@/components/home/FinalCTA";
+import SectionReveal from "@/components/animations/SectionReveal";
 import { COMPANY_NAME, COMPANY_TAGLINE } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -66,19 +67,29 @@ export default function HomePage() {
       <Hero />
 
       {/* 2. Category Cards Section */}
-      <CategoryCards />
+      <SectionReveal>
+        <CategoryCards />
+      </SectionReveal>
 
       {/* 3. Company Snapshot Section */}
-      <CompanySnapshot />
+      <SectionReveal>
+        <CompanySnapshot />
+      </SectionReveal>
 
       {/* 4. Why KC Differentiators */}
-      <WhyKC />
+      <SectionReveal>
+        <WhyKC />
+      </SectionReveal>
 
       {/* 5. 8-Step Export Process */}
-      <ExportProcess />
+      <SectionReveal>
+        <ExportProcess />
+      </SectionReveal>
 
       {/* 6. Final Amber Call to Action */}
-      <FinalCTA />
+      <SectionReveal>
+        <FinalCTA />
+      </SectionReveal>
     </>
   );
 }

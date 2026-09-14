@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Product } from "@/lib/products";
 import { RFQ_COUNTRIES } from "@/lib/constants";
 import {
@@ -47,6 +48,7 @@ export default function RFQModal({ isOpen, onClose, product }: RFQModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const reduced = useReducedMotion();
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -61,8 +63,6 @@ export default function RFQModal({ isOpen, onClose, product }: RFQModalProps) {
       document.body.style.overflow = "unset";
     };
   }, [isOpen]);
-
-  if (!isOpen) return null;
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -119,67 +119,124 @@ export default function RFQModal({ isOpen, onClose, product }: RFQModalProps) {
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="rfq-modal-title"
-    >
-      <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-gray-200 max-h-[90vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 bg-[#1B3A6B] text-white border-b border-[#12284b]">
-          <div>
-            <span className="text-[10px] uppercase font-bold tracking-widest text-[#F5A623]">
-              Direct B2B Commercial Inquiry
-            </span>
-            <h2 id="rfq-modal-title" className="text-lg sm:text-xl font-bold font-serif">
-              Request a Formal Quote
-            </h2>
-            {product && (
-              <p className="text-xs text-gray-200 mt-0.5 truncate max-w-md">
-                Item: <strong className="text-white">{product.name}</strong> ({product.sku})
-              </p>
-            )}
-          </div>
-          <button
-            onClick={onClose}
-            aria-label="Close RFQ Modal"
-            className="p-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition"
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: reduced ? 0.01 : 0.2 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-black/60 backdrop-blur-sm"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) onClose();
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="rfq-modal-title"
+        >
+          <motion.div
+            initial={reduced ? { opacity: 0 } : { scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={reduced ? { opacity: 0 } : { scale: 0.95, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 350, damping: 25, duration: reduced ? 0.01 : 0.25 }}
+            className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-gray-200 max-h-[90vh] flex flex-col overflow-hidden"
           >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-
-        {/* Modal Body */}
-        <div className="p-6 overflow-y-auto space-y-5">
-          {isSubmitted ? (
-            <div className="py-8 text-center space-y-4">
-              <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto text-emerald-600 border border-emerald-200">
-                <CheckCircle2 className="w-10 h-10" />
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 bg-[#1B3A6B] text-white border-b border-[#12284b]">
+              <div>
+                <span className="text-[10px] uppercase font-bold tracking-widest text-[#F5A623]">
+                  Direct B2B Commercial Inquiry
+                </span>
+                <h2 id="rfq-modal-title" className="text-lg sm:text-xl font-bold font-serif">
+                  Request a Formal Quote
+                </h2>
+                {product && (
+                  <p className="text-xs text-gray-200 mt-0.5 truncate max-w-md">
+                    Item: <strong className="text-white">{product.name}</strong> ({product.sku})
+                  </p>
+                )}
               </div>
-              <span className="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-semibold rounded-full uppercase tracking-wider">
-                RFQ Logged #KC-{Math.floor(100000 + Math.random() * 900000)}
-              </span>
-              <h3 className="text-2xl font-bold text-[#1B3A6B] font-serif">
-                Thank you! Our team will contact you within 24 hours.
-              </h3>
-              <p className="text-gray-600 text-sm max-w-md mx-auto leading-relaxed">
-                Your request for <strong>{product ? product.name : "catalog products"}</strong> has
-                been dispatched directly to our Rajkot export documentation desk.
-              </p>
-              <div className="pt-4">
-                <button
-                  onClick={onClose}
-                  className="px-6 py-2.5 bg-[#1B3A6B] text-white text-sm font-semibold rounded-lg hover:bg-[#12284b] transition shadow-sm"
-                >
-                  Close & Return to Catalog
-                </button>
-              </div>
+              <button
+                onClick={onClose}
+                aria-label="Close RFQ Modal"
+                className="p-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
-          ) : (
+
+            {/* Modal Body */}
+            <div className="p-6 overflow-y-auto space-y-5">
+              {isSubmitted ? (
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    visible: {
+                      opacity: 1,
+                      transition: { staggerChildren: reduced ? 0 : 0.12 }
+                    }
+                  }}
+                  className="py-8 text-center space-y-4"
+                >
+                  <motion.div
+                    variants={{
+                      hidden: { scale: 0, opacity: 0 },
+                      visible: {
+                        scale: 1,
+                        opacity: 1,
+                        transition: { type: "spring", stiffness: 400, damping: 18 }
+                      }
+                    }}
+                    className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto text-emerald-600 border border-emerald-200 shadow-md"
+                  >
+                    <CheckCircle2 className="w-10 h-10" />
+                  </motion.div>
+                  <motion.span
+                    variants={{
+                      hidden: { opacity: 0, y: 10 },
+                      visible: { opacity: 1, y: 0 }
+                    }}
+                    className="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-semibold rounded-full uppercase tracking-wider"
+                  >
+                    RFQ Logged #KC-{Math.floor(100000 + Math.random() * 900000)}
+                  </motion.span>
+                  <motion.h3
+                    variants={{
+                      hidden: { opacity: 0, y: 10 },
+                      visible: { opacity: 1, y: 0 }
+                    }}
+                    className="text-2xl font-bold text-[#1B3A6B] font-serif"
+                  >
+                    Thank you! Our team will contact you within 24 hours.
+                  </motion.h3>
+                  <motion.p
+                    variants={{
+                      hidden: { opacity: 0, y: 10 },
+                      visible: { opacity: 1, y: 0 }
+                    }}
+                    className="text-gray-600 text-sm max-w-md mx-auto leading-relaxed"
+                  >
+                    Your request for <strong>{product ? product.name : "catalog products"}</strong> has
+                    been dispatched directly to our Rajkot export documentation desk.
+                  </motion.p>
+                  <motion.div
+                    variants={{
+                      hidden: { opacity: 0, y: 10 },
+                      visible: { opacity: 1, y: 0 }
+                    }}
+                    className="pt-4"
+                  >
+                    <button
+                      onClick={onClose}
+                      className="px-6 py-2.5 bg-[#1B3A6B] text-white text-sm font-semibold rounded-lg hover:bg-[#12284b] transition shadow-sm"
+                    >
+                      Close & Return to Catalog
+                    </button>
+                  </motion.div>
+                </motion.div>
+              ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Product Badge in Form */}
               {product && (
@@ -454,7 +511,9 @@ export default function RFQModal({ isOpen, onClose, product }: RFQModalProps) {
             </form>
           )}
         </div>
-      </div>
-    </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
