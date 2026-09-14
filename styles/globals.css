@@ -264,10 +264,111 @@
 }
 
 /* -------------------------------------------------------------
+   PREMIUM 3D MOTION EFFECTS: MARITIME & LOGISTICS ANIMATIONS
+   ------------------------------------------------------------- */
+
+/* Ship rocking */
+@keyframes shipRock {
+  0%, 100% { transform: translateY(0px) rotateZ(-1.5deg); }
+  50% { transform: translateY(-8px) rotateZ(1.5deg); }
+}
+
+/* Ship drift (left to right) */
+@keyframes shipDrift {
+  0% { transform: translateX(-200px); }
+  100% { transform: translateX(calc(100vw + 200px)); }
+}
+
+/* Ship drift reverse (right to left) */
+@keyframes shipDriftReverse {
+  0% { transform: translateX(calc(100vw + 200px)) scaleX(-1); }
+  100% { transform: translateX(-200px) scaleX(-1); }
+}
+
+/* Plane flight */
+@keyframes planeFlight {
+  0% { transform: translate(-300px, 120px) rotateZ(-5deg) scaleX(-1); }
+  100% { transform: translate(calc(100vw + 300px), -80px) rotateZ(-5deg) scaleX(-1); }
+}
+
+/* Truck drive */
+@keyframes truckDrive {
+  0% { transform: translateX(-400px); }
+  100% { transform: translateX(calc(100vw + 400px)); }
+}
+
+/* Truck drive reverse (right to left) */
+@keyframes truckDriveReverse {
+  0% { transform: translateX(calc(100vw + 400px)) scaleX(-1); }
+  100% { transform: translateX(-400px) scaleX(-1); }
+}
+
+/* Wheel spin */
+@keyframes wheelSpin {
+  from { transform: rotateZ(0deg); }
+  to { transform: rotateZ(360deg); }
+}
+
+/* Smoke puff */
+@keyframes smokePuff {
+  0% { transform: translateY(0) scale(1); opacity: 0.6; }
+  100% { transform: translateY(-40px) scale(2.5); opacity: 0; }
+}
+
+/* Contrail fade */
+@keyframes contrailFade {
+  0% { opacity: 0.8; width: 0px; }
+  50% { opacity: 0.4; }
+  100% { opacity: 0; width: 120px; }
+}
+
+/* Wave motion */
+@keyframes waveMove {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Cloud drift */
+@keyframes cloudDrift {
+  0% { transform: translateX(-200px); }
+  100% { transform: translateX(calc(100vw + 200px)); }
+}
+
+/* Suspension bounce */
+@keyframes suspensionBounce {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+}
+
+/* Container glow */
+@keyframes containerGlow {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.15); }
+}
+
+.ship-animation {
+  will-change: transform;
+}
+.plane-animation {
+  will-change: transform;
+}
+.truck-animation {
+  will-change: transform;
+}
+.wave-animation {
+  will-change: transform;
+}
+.cloud-animation {
+  will-change: transform;
+}
+
+/* -------------------------------------------------------------
    ACCESSIBILITY: PREFERS-REDUCED-MOTION
    ------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *, *::before, *::after,
+  .ship-animation, .plane-animation, .truck-animation,
+  .wave-animation, .cloud-animation {
     animation: none !important;
     transition: none !important;
   }

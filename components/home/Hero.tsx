@@ -1,42 +1,21 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { ArrowRight, ShieldCheck, Ship, Globe2 } from "lucide-react";
+
+const PortScene = dynamic(() => import("@/components/animations/PortScene"), {
+  ssr: false,
+});
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden bg-[#1B3A6B] text-white py-16 sm:py-24 lg:py-28 noise-overlay">
-      {/* Background Decorative Pattern & Gradient */}
-      <div className="absolute inset-0 opacity-15 pointer-events-none navy-hero-pattern" />
-      <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#F5A623]/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
-
-      {/* 6 Animated Floating Particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <span
-          className="absolute top-1/4 left-10 w-3 h-3 rounded-full bg-[#F5A623]/40 animate-float"
-          style={{ animationDelay: "0s", animationDuration: "4s" }}
-        />
-        <span
-          className="absolute top-1/3 right-16 w-4 h-4 rounded-full bg-white/20 animate-float"
-          style={{ animationDelay: "1.2s", animationDuration: "5s" }}
-        />
-        <span
-          className="absolute bottom-1/4 left-1/4 w-2.5 h-2.5 rounded-full bg-[#F5A623]/50 animate-float"
-          style={{ animationDelay: "2s", animationDuration: "3.5s" }}
-        />
-        <span
-          className="absolute top-2/3 right-1/3 w-3.5 h-3.5 rounded-full bg-amber-400/30 animate-float"
-          style={{ animationDelay: "1.7s", animationDuration: "4.5s" }}
-        />
-        <span
-          className="absolute bottom-16 right-12 w-2 h-2 rounded-full bg-white/30 animate-float"
-          style={{ animationDelay: "0.6s", animationDuration: "3s" }}
-        />
-        <span
-          className="absolute top-16 left-1/2 w-3 h-3 rounded-full bg-[#F5A623]/30 animate-float"
-          style={{ animationDelay: "2.4s", animationDuration: "4.2s" }}
-        />
+    <section className="relative overflow-hidden bg-[#0B172B] text-white py-16 sm:py-24 lg:py-28 noise-overlay">
+      {/* 3D Animated Port Scene Background Layer */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <PortScene />
+        {/* Dark navy gradient overlay (opacity-70) so hero text and CTAs stay readable */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0B172B]/90 via-[#1B3A6B]/75 to-[#0F2547]/80 backdrop-blur-[1px]" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

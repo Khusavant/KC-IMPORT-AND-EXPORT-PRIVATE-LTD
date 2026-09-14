@@ -2,12 +2,23 @@ import React from "react";
 import Link from "next/link";
 import { Send, MessageCircle } from "lucide-react";
 import { COMPANY_WHATSAPP_LINK } from "@/lib/constants";
+import CargoShip from "@/components/animations/CargoShip";
 
 export default function FinalCTA() {
   return (
     <section className="relative overflow-hidden animated-gradient-cta py-16 sm:py-24 text-white noise-overlay">
       {/* Background Decorative Texture */}
       <div className="absolute inset-0 opacity-10 pointer-events-none amber-cta-pattern" />
+
+      {/* Mini CargoShip sailing slowly right to left along bottom edge */}
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden pointer-events-none z-0 opacity-45">
+        <CargoShip
+          size={160}
+          speed={32}
+          direction="left"
+          className="bottom-0"
+        />
+      </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="max-w-3xl mx-auto space-y-6">

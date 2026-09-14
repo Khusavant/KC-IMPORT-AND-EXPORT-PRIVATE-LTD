@@ -14,6 +14,9 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { useInView } from "@/lib/hooks/useInView";
+import CargoTruck from "@/components/animations/CargoTruck";
+import CargoShip from "@/components/animations/CargoShip";
+import CargoPlane from "@/components/animations/CargoPlane";
 
 // Map Lucide icons for each export process step (Zero system emojis used)
 const ICON_MAP = {
@@ -108,9 +111,29 @@ export default function ExportProcess() {
                   </p>
                 </div>
 
-                {/* Bottom Step Indicator Arrow (visual connector) */}
+                {/* Bottom Step Indicator Arrow (visual connector) & Transport Miniatures */}
                 <div className="mt-5 pt-3 border-t border-gray-200/60 flex items-center justify-between text-[11px] font-semibold text-gray-400">
-                  <span>Milestone {idx + 1} of 8</span>
+                  <div className="flex items-center gap-2">
+                    <span>Milestone {idx + 1} of 8</span>
+                    {idx === 0 && (
+                      <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-amber-50 border border-amber-200/80 text-[10px] font-bold text-[#1B3A6B]">
+                        <CargoTruck miniature size={50} animateDrive={false} direction="right" />
+                        <span>Road Transit</span>
+                      </div>
+                    )}
+                    {idx === 3 && (
+                      <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-blue-50 border border-blue-200/80 text-[10px] font-bold text-[#1B3A6B]">
+                        <CargoShip miniature size={50} animateDrift={false} direction="right" />
+                        <span>Ocean Berth</span>
+                      </div>
+                    )}
+                    {idx === 5 && (
+                      <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200/80 text-[10px] font-bold text-[#1B3A6B]">
+                        <CargoPlane miniature size={50} animateFlight={false} />
+                        <span>Air Freight</span>
+                      </div>
+                    )}
+                  </div>
                   {idx < EXPORT_STEPS.length - 1 && (
                     <ArrowRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#F5A623] group-hover:translate-x-1 transition-all" />
                   )}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import {
   COMPANY_NAME,
   COMPANY_SHORT_NAME,
@@ -8,6 +9,10 @@ import {
   COMPANY_EMAIL,
   COMPANY_PHONE,
 } from "@/lib/constants";
+
+const PortScene = dynamic(() => import("@/components/animations/PortScene"), {
+  ssr: false,
+});
 import {
   Building2,
   ShieldCheck,
@@ -76,6 +81,11 @@ export default function AboutPage() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* 3D Maritime Port Scene Visual Divider */}
+      <section className="relative overflow-hidden border-y border-[#0B172B]/30 shadow-inner">
+        <PortScene />
       </section>
 
       {/* 2. Company Profile Section (Who we are, what we do, where we are based) */}
