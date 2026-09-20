@@ -57,9 +57,9 @@ export default function Footer() {
                 href={COMPANY_WHATSAPP_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#25D366] hover:bg-[#1EBE5D] text-white text-xs font-bold transition shadow-sm w-fit"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#075E54] hover:bg-[#05463E] text-white text-xs font-bold transition shadow-sm w-fit"
               >
-                <MessageCircle className="w-4 h-4 fill-current" />
+                <MessageCircle className="w-4 h-4 fill-current text-[#25D366]" />
                 <span>Chat on WhatsApp</span>
               </a>
 

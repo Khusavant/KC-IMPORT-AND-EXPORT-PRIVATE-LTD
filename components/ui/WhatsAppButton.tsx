@@ -25,9 +25,9 @@ export default function WhatsAppButton({
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Direct WhatsApp Chat with KC Export Desk"
-        className={`inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 bg-[#25D366] text-white hover:bg-[#1EBE5D] shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2 ${className}`}
+        className={`inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 bg-[#075E54] text-white hover:bg-[#05463E] shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#075E54] focus:ring-offset-2 ${className}`}
       >
-        <MessageCircle className="w-5 h-5 fill-current" />
+        <MessageCircle className="w-5 h-5 fill-current text-[#25D366]" />
         <span>{label}</span>
       </Link>
     );
@@ -54,13 +54,13 @@ export default function WhatsAppButton({
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat directly on WhatsApp with KC Export team"
-        className="flex items-center gap-2.5 bg-[#25D366] hover:bg-[#1EBE5D] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2 border-2 border-white/80"
+        className="flex items-center gap-2.5 bg-[#075E54] hover:bg-[#05463E] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#075E54] focus:ring-offset-2 border-2 border-white/80"
       >
         <span className="relative flex h-2.5 w-2.5">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
         </span>
-        <MessageCircle className="w-5 h-5 fill-current" />
+        <MessageCircle className="w-5 h-5 fill-current text-[#25D366]" />
         <span className="text-xs font-bold tracking-wide hidden sm:inline">WhatsApp Us</span>
       </Link>
     </aside>
