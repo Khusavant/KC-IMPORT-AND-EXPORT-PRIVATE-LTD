@@ -430,9 +430,9 @@ export default function AIChatWidget() {
                 </div>
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="text-sm font-bold tracking-tight">
+                    <p className="text-sm font-bold tracking-tight">
                       KC AI Sales Assistant
-                    </h3>
+                    </p>
                     {leadIntent && (
                       <LeadScoreBadge
                         intent={leadIntent}
@@ -457,6 +457,7 @@ export default function AIChatWidget() {
                 <button
                   onClick={resetChat}
                   title="Restart conversation"
+                  aria-label="Restart conversation"
                   className="p-1.5 text-blue-200 hover:text-white hover:bg-white/10 rounded-lg transition"
                 >
                   <RotateCcw className="w-4 h-4" />
@@ -465,6 +466,7 @@ export default function AIChatWidget() {
                   <button
                     onClick={() => setIsMaximized(!isMaximized)}
                     title={isMaximized ? "Restore size" : "Maximize chat"}
+                    aria-label={isMaximized ? "Restore size" : "Maximize chat"}
                     className="p-1.5 text-blue-200 hover:text-white hover:bg-white/10 rounded-lg transition"
                   >
                     {isMaximized ? (
@@ -477,6 +479,7 @@ export default function AIChatWidget() {
                 <button
                   onClick={() => setIsOpen(false)}
                   title="Minimize chat"
+                  aria-label="Minimize chat"
                   className="p-1.5 text-blue-200 hover:text-white hover:bg-white/10 rounded-lg transition"
                 >
                   <Minus className="w-4 h-4" />

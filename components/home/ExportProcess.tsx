@@ -91,7 +91,7 @@ export default function ExportProcess() {
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <span
-                      className={`text-xl font-black text-[#F5A623] font-serif tracking-tighter w-10 h-10 rounded-full bg-amber-50 border border-amber-200/60 flex items-center justify-center transition-all duration-300 ${
+                      className={`text-xl font-black text-[#92400E] font-serif tracking-tighter w-10 h-10 rounded-full bg-amber-50 border border-amber-200/60 flex items-center justify-center transition-all duration-300 ${
                         inView ? "pulse-ring" : ""
                       }`}
                     >
@@ -112,7 +112,7 @@ export default function ExportProcess() {
                 </div>
 
                 {/* Bottom Step Indicator Arrow (visual connector) & Transport Miniatures */}
-                <div className="mt-5 pt-3 border-t border-gray-200/60 flex items-center justify-between text-[11px] font-semibold text-gray-400">
+                <div className="mt-5 pt-3 border-t border-gray-200/60 flex items-center justify-between text-[11px] font-semibold text-gray-600">
                   <div className="flex items-center gap-2">
                     <span>Milestone {idx + 1} of 8</span>
                     {idx === 0 && (

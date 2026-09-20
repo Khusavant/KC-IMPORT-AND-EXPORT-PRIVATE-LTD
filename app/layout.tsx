@@ -63,11 +63,28 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@kcimportexport",
   },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
   manifest: "/manifest.json",
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
+};
+
+export const viewport = {
+  themeColor: "#1B3A6B",
+  width: "device-width",
+  initialScale: 1,
 };
 
 import { validateEnv } from "@/lib/env";
@@ -82,10 +99,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="alternate" hrefLang="en" href="https://kcimportexport.com" />
         <link rel="alternate" hrefLang="x-default" href="https://kcimportexport.com" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body suppressHydrationWarning className="bg-[#F8F9FA] text-[#1A1A1A] font-sans antialiased min-h-screen flex flex-col selection:bg-[#F5A623]/30 selection:text-[#1B3A6B]">

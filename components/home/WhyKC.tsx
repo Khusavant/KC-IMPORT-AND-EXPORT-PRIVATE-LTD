@@ -67,7 +67,7 @@ export default function WhyKC() {
                     </p>
                   </div>
 
-                  <div className="mt-6 pt-4 border-t border-gray-100 flex items-center gap-2 text-xs font-semibold text-gray-500">
+                  <div className="mt-6 pt-4 border-t border-gray-100 flex items-center gap-2 text-xs font-semibold text-gray-600">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#F5A623]" />
                     <span>Standardized Export Protocol</span>
                   </div>

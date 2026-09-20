@@ -93,7 +93,7 @@ export default function CompanySnapshot() {
                   {stat.label}
                 </div>
 
-                <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                <p className="text-xs text-gray-600 mt-1 leading-relaxed">
                   {stat.subtext}
                 </p>
               </div>
@@ -103,9 +103,9 @@ export default function CompanySnapshot() {
 
         {/* Narrative Paragraph */}
         <div className="max-w-4xl mx-auto text-center bg-blue-50/60 backdrop-blur-sm rounded-2xl p-8 border border-blue-100/80 shadow-sm">
-          <h3 className="text-xl sm:text-2xl font-bold text-[#1B3A6B] mb-3 font-serif">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#1B3A6B] mb-3 font-serif">
             A Strategic Export Conduit Rooted in Rajkot, Gujarat
-          </h3>
+          </h2>
           <p className="text-gray-700 text-sm sm:text-base leading-relaxed">
             Headquartered in the vibrant manufacturing epicenter of Rajkot,{" "}
             <strong>{COMPANY_NAME}</strong> acts as a direct export bridge linking

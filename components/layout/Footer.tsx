@@ -103,9 +103,9 @@ export default function Footer() {
 
           {/* Column 2: Quick Links & Trade Navigation */}
           <div className="space-y-4">
-            <h4 className="text-xs uppercase tracking-widest text-[#F5A623] font-bold">
+            <h3 className="text-xs uppercase tracking-widest text-[#F5A623] font-bold">
               Trade Navigation
-            </h4>
+            </h3>
             <ul className="space-y-2.5 text-sm">
               <li>
                 <Link
@@ -166,9 +166,9 @@ export default function Footer() {
 
           {/* Column 3: Trade Guides & Articles */}
           <div className="space-y-4">
-            <h4 className="text-xs uppercase tracking-widest text-[#F5A623] font-bold">
+            <h3 className="text-xs uppercase tracking-widest text-[#F5A623] font-bold">
               Trade Guides &amp; Insights
-            </h4>
+            </h3>
             <ul className="space-y-2.5 text-xs text-gray-300">
               <li>
                 <Link
@@ -220,9 +220,9 @@ export default function Footer() {
 
           {/* Column 4: Contact Info & Export Desk */}
           <div className="space-y-4">
-            <h4 className="text-xs uppercase tracking-widest text-[#F5A623] font-bold">
+            <h3 className="text-xs uppercase tracking-widest text-[#F5A623] font-bold">
               Export Headquarters
-            </h4>
+            </h3>
             <div className="space-y-3.5 text-sm text-gray-300">
               <div className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-[#F5A623] mt-1 flex-shrink-0" />

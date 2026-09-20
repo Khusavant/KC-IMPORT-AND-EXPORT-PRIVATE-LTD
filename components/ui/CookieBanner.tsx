@@ -48,10 +48,10 @@ export default function CookieBanner() {
         </div>
         <div className="space-y-2 flex-1">
           <div className="flex items-center justify-between">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#F5A623] flex items-center gap-1.5">
+            <p className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5" />
               Privacy &amp; Cookie Notice
-            </h4>
+            </p>
             <button
               onClick={handleDecline}
               aria-label="Close cookie banner"

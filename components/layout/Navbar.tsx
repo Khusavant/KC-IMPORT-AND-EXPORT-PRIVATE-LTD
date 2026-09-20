@@ -535,9 +535,9 @@ export default function Navbar() {
                                 <div className="col-span-8 space-y-6">
                                   {item.dropdown.sections.map((sec) => (
                                     <div key={sec.title} className="space-y-2">
-                                      <h4 className="text-[11px] font-bold uppercase tracking-wider text-gray-400">
+                                      <p className="text-[11px] font-bold uppercase tracking-wider text-gray-500">
                                         {sec.title}
-                                      </h4>
+                                      </p>
                                       <div
                                         className={
                                           sec.title === "By Category"
@@ -583,9 +583,9 @@ export default function Navbar() {
                                       </span>
                                       <Building2 className="w-4 h-4 text-[#F5A623]" />
                                     </div>
-                                    <h5 className="text-sm font-bold text-[#1B3A6B] font-serif">
-                                      {item.dropdown.featured.label}
-                                    </h5>
+                                     <p className="text-sm font-bold text-[#1B3A6B] font-serif">
+                                       {item.dropdown.featured.label}
+                                     </p>
                                     <p className="text-xs text-gray-600 leading-relaxed">
                                       {item.dropdown.featured.desc}
                                     </p>
@@ -727,6 +727,7 @@ export default function Navbar() {
                   </div>
                   <button
                     onClick={() => setMobileOpen(false)}
+                    aria-label="Close navigation drawer"
                     className="p-2 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100"
                   >
                     <X className="w-5 h-5" />

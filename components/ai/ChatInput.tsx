@@ -95,6 +95,7 @@ export default function ChatInput({
           disabled={!text.trim() || disabled}
           className="p-2.5 rounded-xl bg-[#1B3A6B] hover:bg-[#152e55] text-white disabled:opacity-40 disabled:hover:bg-[#1B3A6B] transition shadow-xs shrink-0 flex items-center justify-center"
           title="Send message"
+          aria-label="Send message"
         >
           <Send className="w-4 h-4" />
         </button>
